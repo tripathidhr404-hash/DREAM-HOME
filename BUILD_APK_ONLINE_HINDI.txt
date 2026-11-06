@@ -1,0 +1,20 @@
+DREAM HOME APK ONLINE BANANE KA AASAN TARIKA (BINA ANDROID STUDIO)
+
+Is project ZIP mein GitHub Actions workflow diya hai. GitHub apne cloud computer par APK banayega.
+
+1. https://github.com par account banayein / sign in karein.
+2. New repository banayein. Naam: DREAM-HOME. Public ya Private chun sakte hain.
+3. Repository kholkar Add file > Upload files par click karein.
+4. ZIP ko pehle apne computer par Extract karein. Extract kiye hue DREAM_HOME_Android_Project folder ke ANDAR ki sabhi files aur folders upload karein. Dhyan rahe .github folder bhi upload hona chahiye.
+5. Commit changes dabayein.
+6. Repository mein Actions tab kholein. 'Build DREAM HOME APK' workflow select karein.
+7. Agar workflow run nahi hua to Run workflow dabayein.
+8. Build complete hone par neeche Artifacts mein DREAM-HOME-APK.zip milega. Use download karke extract karein. Andar app-debug.apk hogi.
+9. APK phone mein bhejein aur install karein. Android pooche to is source se app install karne ki permission dein.
+
+ZAROORI:
+- Ye online cloud build hai; GitHub par internet aur account chahiye.
+- APK debug-signed hogi, personal phone par install/test ke liye.
+- Ye abhi 100% offline guarantee nahi karti, kyunki HTML mein Tailwind CSS, Font Awesome aur Google Fonts CDN se load hote hain. Pehli baar internet chahiye; cache ke baad kuch resources offline mil sakte hain.
+- Original HTML ko badla nahi gaya hai.
+- App ka data phone ke local storage mein rahega. App uninstall/data clear karne se pehle JSON backup zaroor lein.
