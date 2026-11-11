@@ -1177,23 +1177,36 @@
         });
     }
 
-    // Download Full JSON Backup
-    function downloadBackupJSON() {
-        const backupData = {
-            version: "2.0",
-            exportDate: new Date().toISOString(),
-            entries: entries,
-            contracts: contracts
-        };
+   
+// Download Full JSON Backup
+function downloadBackupJSON() {
+    const backupData = {
+        version: "2.0",
+        exportDate: new Date().toISOString(),
+        entries: entries,
+        contracts: contracts
+    };
 
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `Ghar_Nirman_Backup_${new Date().toISOString().slice(0,10)}.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
+    const jsonString = JSON.stringify(backupData, null, 2);
+
+    const fileName = `Ghar_Nirman_Backup_${new Date().toISOString().slice(0,10)}.json`;
+
+    if (window.Android && typeof Android.saveFile === "function") {
+        const base64Data = btoa(unescape(encodeURIComponent(jsonString)));
+        Android.saveFile(fileName, "application/json", base64Data);
+    } else {
+        const blob = new Blob([jsonString], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
     }
+}
+
 
     // Trigger File Upload for Restore
     function triggerRestoreInput() {
