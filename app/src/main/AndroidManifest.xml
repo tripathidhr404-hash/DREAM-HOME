@@ -4,7 +4,8 @@
         android:allowBackup="true"
         android:label="DREAM HOME"
         android:theme="@android:style/Theme.Material.Light.NoActionBar"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
