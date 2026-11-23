@@ -1461,6 +1461,41 @@
         });
     }
 
+    // Save files through the Android bridge in the APK; use browser download as a fallback.
+    function saveTextFile(fileName, mimeType, textContent) {
+        if (window.Android && typeof window.Android.saveFile === "function") {
+            try {
+                const bytes = new TextEncoder().encode(textContent);
+                let binary = "";
+                const chunkSize = 0x8000;
+
+                for (let i = 0; i < bytes.length; i += chunkSize) {
+                    const chunk = bytes.subarray(i, Math.min(i + chunkSize, bytes.length));
+                    binary += String.fromCharCode.apply(null, chunk);
+                }
+
+                window.Android.saveFile(fileName, mimeType, btoa(binary));
+                return;
+            } catch (error) {
+                console.error("Android file save failed:", error);
+                alert(currentLang === "hi"
+                    ? "फ़ाइल तैयार नहीं हो सकी। कृपया दोबारा कोशिश करें।"
+                    : "Could not prepare the file. Please try again.");
+                return;
+            }
+        }
+
+        const blob = new Blob([textContent], { type: mimeType + ";charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
     // Download Full JSON Backup (preserves exact presetId, presetName, and custom Item Details / Specification)
     function downloadBackupJSON() {
         const sanitizedEntries = entries.map(e => normalizeEntry(e));
@@ -1472,15 +1507,8 @@
         };
 
         const jsonString = JSON.stringify(backupData, null, 2);
-        const blob = new Blob([jsonString], { type: "application/json;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", url);
-        downloadAnchor.setAttribute("download", `Ghar_Nirman_Backup_${new Date().toISOString().slice(0,10)}.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        const fileName = `Ghar_Nirman_Backup_${new Date().toISOString().slice(0,10)}.json`;
+        saveTextFile(fileName, "application/json", jsonString);
     }
 
     // Trigger File Upload for Restore
@@ -1547,15 +1575,8 @@
             csvContent += row.join(",") + "\n";
         });
 
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", `Ghar_Nirman_Expenses_${new Date().toISOString().slice(0,10)}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        const fileName = `Ghar_Nirman_Expenses_${new Date().toISOString().slice(0,10)}.csv`;
+        saveTextFile(fileName, "text/csv", csvContent);
     }
 </script>
 
