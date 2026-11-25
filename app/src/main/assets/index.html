@@ -942,8 +942,9 @@
                 <option value="contractor">ठेकेदार (Contractor)</option>
                 <option value="electricity">बिजली (Electricity)</option>
                 <option value="plumber">प्लंबर (Plumber)</option>
-                <option value="putai">पुताई (Putai)</option>
+                <option value="tile">टाइल (Tile)</option>
                 <option value="furniture">फर्नीचर (Furniture)</option>
+                <option value="putai">पुताई (Putai)</option>
                 <option value="other">अन्य (Other)</option>
               </select>
             </div>
@@ -989,6 +990,7 @@
           <option value="electricity">Electricity</option>
           <option value="plumber">Plumber</option>
           <option value="furniture">Furniture</option>
+          <option value="tile">Tile</option>
           <option value="putai">Putai</option>
           <option value="other">Other</option>
         </select>
@@ -997,6 +999,7 @@
           <option value="all">All Items</option>
         </select>
       </div>
+
       <div id="summary-container"></div>
       </div>
     </section>
@@ -1056,6 +1059,7 @@
           <option value="electricity">Electricity</option>
           <option value="plumber">Plumber</option>
           <option value="furniture">Furniture</option>
+          <option value="tile">Tile</option>
           <option value="putai">Putai</option>
           <option value="other">Other</option>
         </select>
@@ -1108,6 +1112,7 @@
         { id: 'sand', hi: 'रेत / बालू (Sand)', en: 'Sand', unit: 'Truck / Trolley' },
         { id: 'gitti', hi: 'गिट्टी (Gitti)', en: 'Gitti / Aggregate', unit: 'Truck / Trolley' },
         { id: 'bricks', hi: 'ईंटें (Bricks)', en: 'Bricks', unit: 'Pieces / Nos' },
+        { id: 'tile', hi: 'टाइल (Tile)', en: 'Tile', unit: 'Pieces / Nos' },
         { id: 'dust', hi: 'क्रशर डस्ट (Dust)', en: 'Crusher Dust', unit: 'Cu.Ft' },
         { id: 'wire_bind', hi: 'बाइंडिंग वायर', en: 'Binding Wire', unit: 'Kg' },
         { id: 'other_mat', hi: 'अन्य सामग्री', en: 'Other Material', unit: 'Other' }
@@ -1164,6 +1169,7 @@
       electricity: { hi: 'बिजली (Electricity)', en: 'Electricity' },
       plumber: { hi: 'प्लंबर (Plumber)', en: 'Plumber' },
       furniture: { hi: 'फर्नीचर (Furniture)', en: 'Furniture' },
+      tile: { hi: 'टाइल (Tile)', en: 'Tile' },
       putai: { hi: 'पुताई (Putai)', en: 'Putai' },
       other: { hi: 'अन्य (Other)', en: 'Other' }
     };
@@ -1224,6 +1230,7 @@
         else if (c.includes('elec') || c.includes('बिजली')) r.category = 'electricity';
         else if (c.includes('plumb') || c.includes('प्लंबर')) r.category = 'plumber';
         else if (c.includes('furn') || c.includes('फर्नीचर')) r.category = 'furniture';
+        else if (c.includes('tile') || c.includes('टाइल')) r.category = 'tile';
         else if (c.includes('putai') || c.includes('paint') || c.includes('पुताई')) r.category = 'putai';
         else r.category = 'other';
       }
@@ -1341,12 +1348,13 @@
         { val: 'electricity', text: 'बिजली (Electricity)' },
         { val: 'plumber', text: 'प्लंबर (Plumber)' },
         { val: 'furniture', text: 'फर्नीचर (Furniture)' },
+        { val: 'tile', text: 'टाइल (Tile)' },
         { val: 'putai', text: 'पुताई / पेंट (Putai)' },
         { val: 'other', text: 'अन्य (Other)' }
       ];
       const filtered = allCats.filter(c => {
-        if (type === 'buy' && c.val === 'contractor') return false;
-        if (type === 'labour' && c.val === 'transport') return false;
+        if ((type === 'buy' || type === 'return') && (c.val === 'contractor' || c.val === 'tile')) return false;
+        if (type === 'labour' && (c.val === 'transport' || c.val === 'material')) return false;
         return true;
       });
       catSel.innerHTML = filtered.map(c => `<option value="${c.val}">${c.text}</option>`).join('');
@@ -2017,6 +2025,7 @@
       ['sec-kpis', 'sec-form', 'sec-contracts', 'sec-summary', 'sec-ledger'].forEach(id => {
         document.getElementById(id)?.classList.add('hidden');
       });
+
       if (tab === 'add') {
         document.getElementById('sec-form')?.classList.remove('hidden');
         document.getElementById('sec-contracts')?.classList.remove('hidden');
@@ -2040,7 +2049,6 @@
       }
     });
 
-    // Save files through Android WebView bridge; use browser download outside the APK.
     async function saveBlobFile(blob, fileName, mimeType) {
       try {
         if (window.Android && typeof window.Android.saveFile === 'function') {
@@ -2130,11 +2138,17 @@
     function triggerAutoHTMLAfterConversion(reasonLabel) {
       const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
       const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
-      const fileName = `Dream_Home_v2.5_${todayISO()}.html`;
-      saveBlobFile(blob, fileName, 'text/html');
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Dream_Home_v2.5_${todayISO()}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
       setExportNotice(state.lang === 'hi'
-        ? `${reasonLabel} के बाद HTML फ़ाइल सेव करने के लिए स्थान चुनें`
-        : `Choose a location to save the HTML file after ${reasonLabel}`);
+        ? `${reasonLabel} के बाद HTML फ़ाइल भी तैयार/डाउनलोड हो गई`
+        : `HTML file also generated after ${reasonLabel}`);
     }
 
     function sanitizeCSVText(val) {
