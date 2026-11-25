@@ -1,1584 +1,2219 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghar Nirman Expense & Budget Manager (घर निर्माण खर्च एवं बजट मैनेजर)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0b1120" />
+  <title>Dream Home v2.5 — Smart Construction Ledger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --bg-grad: radial-gradient(circle at 12% 0%, #fff7ed 0%, transparent 38%), radial-gradient(circle at 90% 8%, #eff6ff 0%, transparent 42%), #eef2f7;
+      --surface: rgba(255, 255, 255, 0.94);
+      --surface-solid: #ffffff;
+      --surface-alt: #f8fafc;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --line-strong: #cbd5e1;
+      --brand: #0b1120;
+      --accent: #ea580c;
+      --accent-2: #f59e0b;
+      --accent-soft: #fff7ed;
+      --buy: #059669;
+      --buy-soft: #ecfdf5;
+      --ret: #e11d48;
+      --ret-soft: #fff1f2;
+      --lab: #d97706;
+      --lab-soft: #fffbeb;
+      --info: #2563eb;
+      --info-soft: #eff6ff;
+      --radius-xl: 24px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 12px 32px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 20px 44px rgba(15, 23, 42, 0.12);
+    }
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts (Inter & Noto Sans Devanagari) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    <style>
-        body {
-            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
-            background-color: #f8fafc;
-        }
-    </style>
+    body {
+      margin: 0;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif;
+      background: var(--bg-grad);
+      color: var(--ink);
+      min-height: 100vh;
+      padding-bottom: 92px;
+      line-height: 1.45;
+    }
+
+    /* Top Header */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: linear-gradient(135deg, #090e1a 0%, #111827 55%, #1e293b 100%);
+      backdrop-filter: blur(14px);
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 28px rgba(2, 6, 23, 0.22);
+    }
+
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 13px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #fb923c 0%, #ea580c 55%, #f59e0b 100%);
+      color: #090e1a;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 17px;
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(234, 88, 12, 0.38);
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .ver-pill {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(251, 146, 60, 0.18);
+      color: #fdba74;
+      border: 1px solid rgba(251, 146, 60, 0.38);
+      letter-spacing: 0.03em;
+    }
+
+    .brand-sub {
+      font-size: 11.5px;
+      color: #94a3b8;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 12px;
+      border-radius: 11px;
+      padding: 8px 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.16s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.09);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #fff;
+      font-weight: 800;
+      padding: 11px 20px;
+      font-size: 13px;
+      border-radius: 13px;
+      box-shadow: 0 8px 20px rgba(234, 88, 12, 0.32);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 24px rgba(234, 88, 12, 0.42);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--ink);
+      border: 1px solid var(--line-strong);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-danger-soft {
+      background: var(--ret-soft);
+      color: var(--ret);
+      border: 1px solid #fecdd3;
+    }
+
+    .btn-danger-soft:hover {
+      background: #ffe4e6;
+    }
+
+    .btn-info-soft {
+      background: var(--info-soft);
+      color: var(--info);
+      border: 1px solid #bfdbfe;
+    }
+
+    .btn-info-soft:hover {
+      background: #dbeafe;
+    }
+
+    /* Layout Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 18px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .kpi-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px;
+      }
+      body {
+        padding-bottom: 44px;
+      }
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: var(--radius-lg);
+      padding: 16px 17px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #cbd5e1, #94a3b8);
+      opacity: 0.65;
+    }
+
+    .kpi-card.hero {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #090e1a 0%, #172554 58%, #1e293b 100%);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .kpi-card.hero::before {
+      background: linear-gradient(90deg, #fb923c, #fbbf24);
+      opacity: 1;
+      height: 3.5px;
+    }
+
+    @media (min-width: 768px) {
+      .kpi-card.hero {
+        grid-column: span 1;
+      }
+    }
+
+    .kpi-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    .kpi-card.hero .kpi-label {
+      color: #cbd5e1;
+    }
+
+    .kpi-val {
+      font-size: 21px;
+      font-weight: 800;
+      margin-top: 6px;
+      letter-spacing: -0.025em;
+    }
+
+    .kpi-card.hero .kpi-val {
+      font-size: 25px;
+      color: #fbbf24;
+    }
+
+    .kpi-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 5px;
+      font-weight: 500;
+    }
+
+    .kpi-card.hero .kpi-sub {
+      color: #94a3b8;
+    }
+
+    /* Workspace Split */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    @media (min-width: 960px) {
+      .workspace-grid {
+        grid-template-columns: 1.38fr 0.92fr;
+        align-items: start;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid rgba(226, 232, 240, 0.92);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(10px);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.015em;
+    }
+
+    .card-sub {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Segmented Type Selector */
+    .seg-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 5px;
+      border-radius: 14px;
+    }
+
+    .seg-btn {
+      border: 0;
+      background: transparent;
+      color: #475569;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 10px 8px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.16s ease;
+    }
+
+    .seg-btn.active-buy {
+      background: #fff;
+      color: var(--buy);
+      box-shadow: 0 3px 10px rgba(5, 150, 105, 0.14);
+    }
+
+    .seg-btn.active-return {
+      background: #fff;
+      color: var(--ret);
+      box-shadow: 0 3px 10px rgba(225, 29, 72, 0.14);
+    }
+
+    .seg-btn.active-labour {
+      background: #fff;
+      color: var(--lab);
+      box-shadow: 0 3px 10px rgba(217, 119, 6, 0.14);
+    }
+
+    /* Form Controls */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .form-grid.two {
+        grid-template-columns: 1fr 1fr;
+      }
+      .form-grid.three {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    .field label {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      background: var(--surface-alt);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10.5px 13px;
+      border-radius: 11px;
+      outline: none;
+      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      background: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3.5px rgba(234, 88, 12, 0.14);
+    }
+
+    .total-bar {
+      margin-top: 16px;
+      background: linear-gradient(135deg, #090e1a 0%, #1e293b 100%);
+      color: #fff;
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+    }
+
+    .total-bar .amt {
+      font-size: 21px;
+      font-weight: 800;
+      color: #fbbf24;
+      letter-spacing: -0.02em;
+    }
+
+    /* Contracts */
+    .contract-item {
+      background: var(--surface-alt);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+
+    .progress-track {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #ea580c);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    /* Filters & Ledger */
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .filters-row input,
+    .filters-row select {
+      border: 1px solid var(--line-strong);
+      background: var(--surface-alt);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 9px 12px;
+      border-radius: 11px;
+      outline: none;
+    }
+
+    .filters-row input {
+      flex: 1;
+      min-width: 190px;
+    }
+
+    .ledger-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .ledger-strip {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .entry-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .entry-row {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 15px;
+      padding: 13px 15px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      transition: all 0.14s ease;
+    }
+
+    .entry-row:hover {
+      background: #fcfcfd;
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-buy {
+      background: var(--buy-soft);
+      color: var(--buy);
+    }
+
+    .badge-return {
+      background: var(--ret-soft);
+      color: var(--ret);
+    }
+
+    .badge-labour {
+      background: var(--lab-soft);
+      color: var(--lab);
+    }
+
+    .badge-new {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .summary-group {
+      border: 1px solid var(--line);
+      background: var(--surface-alt);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .summary-items {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .summary-items {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .summary-tile {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 11px 13px;
+      font-size: 12px;
+    }
+
+    /* Bottom Reset & Mobile Nav */
+    #bottom-reset-wrap {
+      max-width: 1200px;
+      margin: 6px auto 18px;
+      padding: 0 18px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 6px 4px;
+      box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    @media (min-width: 768px) {
+      .bottom-nav {
+        display: none;
+      }
+    }
+
+    .nav-item {
+      border: 0;
+      background: transparent;
+      font-family: inherit;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 2px;
+      cursor: pointer;
+    }
+
+    .nav-item.active {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .toast {
+      position: fixed;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+      background: #090e1a;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      display: none;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .empty-box {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 7px;
+      justify-content: flex-end;
+    }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col text-slate-800">
-
-<!-- Header Navbar -->
-<header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center space-x-3">
-            <div class="bg-amber-500 text-slate-900 p-2.5 rounded-xl shadow">
-                <i class="fa-solid fa-house-chimney-crack text-xl"></i>
-            </div>
-            <div>
-                <h1 class="text-xl sm:text-2xl font-bold tracking-tight" id="app-title">Ghar Nirman Cost Manager</h1>
-                <p class="text-xs text-indigo-200" id="app-subtitle">घर निर्माण खर्च और बजट प्रबंधन</p>
-            </div>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">DH</div>
+        <div>
+          <div class="brand-title">
+            <span id="ui-title">Dream Home Ledger</span>
+            <span class="ver-pill">v2.5</span>
+          </div>
+          <div class="brand-sub" id="ui-subtitle">Fresh Clean Interface • Buy, Return, Freight & Contracts</div>
         </div>
-        
-        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-            <!-- Backup JSON Button -->
-            <button onclick="downloadBackupJSON()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm px-3 py-2 rounded-lg font-medium shadow flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-download"></i>
-                <span data-i18n="btn_backup">Backup (बैकअप)</span>
-            </button>
-            
-            <!-- Restore JSON Button -->
-            <button onclick="triggerRestoreInput()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs sm:text-sm px-3 py-2 rounded-lg font-medium shadow flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-upload"></i>
-                <span data-i18n="btn_restore">Restore (रिस्टोर)</span>
-            </button>
-            <input type="file" id="restore-file-input" accept=".json" onchange="restoreBackupJSON(event)" class="hidden">
+      </div>
 
-            <!-- Export CSV Button -->
-            <button onclick="exportToCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm px-3 py-2 rounded-lg font-medium shadow flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-file-excel"></i>
-                <span id="btn-export">Export CSV</span>
-            </button>
-            
-            <!-- Language Toggle -->
-            <button onclick="toggleLanguage()" class="bg-indigo-800 hover:bg-indigo-700 border border-indigo-600 text-amber-300 text-xs sm:text-sm px-3 py-2 rounded-lg font-semibold shadow flex items-center gap-2 transition">
-                <i class="fa-solid fa-language text-base"></i>
-                <span id="lang-btn-text">Switch to English</span>
-            </button>
-        </div>
-    </div>
-</header>
-
-<!-- Main Content Container -->
-<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-
-    <!-- Top KPI Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <!-- Total Cost -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider" data-i18n="kpi_total_cost">Total Spent (कुल खर्च)</p>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1" id="kpi-total-cost">₹0</h3>
-                </div>
-                <div class="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl">
-                    <i class="fa-solid fa-indian-rupee-sign text-lg"></i>
-                </div>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-2" data-i18n="kpi_total_cost_desc">Purchases + Labour + Freight</p>
-        </div>
-
-        <!-- Material Net Purchase -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider" data-i18n="kpi_material_cost">Net Material (सामग्री खर्च)</p>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-blue-600 mt-1" id="kpi-material-cost">₹0</h3>
-                </div>
-                <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
-                    <i class="fa-solid fa-boxes-packing text-lg"></i>
-                </div>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-2" id="kpi-material-subtext">Purchases - Returns</p>
-        </div>
-
-        <!-- Total Transport / Freight Cost KPI -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider" data-i18n="kpi_transport_cost">Transport Cost (कुल भाड़ा)</p>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-purple-600 mt-1" id="kpi-transport-cost">₹0</h3>
-                </div>
-                <div class="p-2.5 bg-purple-50 text-purple-600 rounded-xl">
-                    <i class="fa-solid fa-truck-ramp-box text-lg"></i>
-                </div>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-2" data-i18n="kpi_transport_cost_desc">Total Freight & Delivery</p>
-        </div>
-
-        <!-- Labour Paid -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider" data-i18n="kpi_labour_paid">Labour Paid (मजदूरी)</p>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-emerald-600 mt-1" id="kpi-labour-paid">₹0</h3>
-                </div>
-                <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl">
-                    <i class="fa-solid fa-user-group text-lg"></i>
-                </div>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-2" id="kpi-labour-subtext">Total Contracts: ₹0</p>
-        </div>
-
-        <!-- Labour Pending Balance -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between hover:shadow-md transition">
-            <div class="flex justify-between items-start">
-                <div>
-                    <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider" data-i18n="kpi_labour_pending">Labour Pending (बाकी राशि)</p>
-                    <h3 class="text-xl sm:text-2xl font-extrabold text-amber-600 mt-1" id="kpi-labour-pending">₹0</h3>
-                </div>
-                <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
-                    <i class="fa-solid fa-clock-rotate-left text-lg"></i>
-                </div>
-            </div>
-            <p class="text-[11px] text-slate-500 mt-2" data-i18n="kpi_labour_pending_desc">Promised - Paid</p>
-        </div>
-    </div>
-
-    <!-- Form & Contractor Setup Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- Dynamic Entry Form (2 Cols) -->
-        <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
-                <div class="flex items-center space-x-2">
-                    <i class="fa-solid fa-pen-to-square text-indigo-600 text-lg"></i>
-                    <h2 class="text-lg font-bold text-slate-900" data-i18n="form_title">New Entry (नया लेन-देन दर्ज करें)</h2>
-                </div>
-                <span id="form-mode-badge" class="px-2.5 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-600">New Entry</span>
-            </div>
-
-            <form id="entry-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-                <input type="hidden" id="entry-id">
-
-                <!-- Dropdowns Row 1: Transaction Type & Category -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Transaction Type -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_type">Transaction Type (प्रकार)</label>
-                        <select id="type-select" onchange="handleTypeChange()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
-                            <option value="buy">🛒 Buy (खरीद)</option>
-                            <option value="return">🔄 Return (वापसी/रिटर्न)</option>
-                            <option value="labour">👷 Labour / Contractor Payment (मजदूरी/भुगतान)</option>
-                        </select>
-                    </div>
-
-                    <!-- Category -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_category">Category (श्रेणी)</label>
-                        <select id="category-select" onchange="handleCategoryChange()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
-                            <option value="material">🏗️ Material (सामग्री)</option>
-                            <option value="contractor">👷 Contractor (ठेकेदार - चुनाई व प्लास्टर)</option>
-                            <option value="transport">🚚 Transport / Freight (भाड़ा/परिवहन)</option>
-                            <option value="electricity">⚡ Electricity (इलेक्ट्रिक/बिजली)</option>
-                            <option value="plumber">🚰 Plumber (प्लंबर)</option>
-                            <option value="furniture">🪑 Furniture (फर्नीचर)</option>
-                            <option value="putai">🎨 Putai / Paint (पुताई/पेंट)</option>
-                            <option value="other">📦 Other (अन्य)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Material & Goods Specific Inputs (Visible for Buy & Return) -->
-                <div id="section-material" class="space-y-4 pt-2">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Predefined Sub-Category Dropdown -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_select_item">Select Item Preset (सामग्री चुनें)</label>
-                            <select id="predefined-item-select" onchange="handlePredefinedItemSelect()" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium">
-                                <!-- Populated dynamically via JS -->
-                            </select>
-                        </div>
-
-                        <!-- Custom Item Name Input -->
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_item_name">Item Details / Specification (सामग्री नाम/माप)</label>
-                            <input type="text" id="item-name" placeholder="e.g. Ultratech Cement, ACC Cement, 12mm Sariya" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_unit">Unit (इकाई)</label>
-                            <select id="unit-select" onchange="handleUnitChange()" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="Ton">Ton (टन)</option>
-                                <option value="Kg">Kg (किलोग्राम / किग्रा)</option>
-                                <option value="Quintal">Quintal (क्विंटल)</option>
-                                <option value="Bags">Bags (बोरी)</option>
-                                <option value="Truck / Trolley">Truck / Trolley (ट्रक / ट्रॉली)</option>
-                                <option value="Cu.Ft">Cu.Ft (घन फीट)</option>
-                                <option value="Brass">Brass (ब्रास)</option>
-                                <option value="Pieces / Nos">Pieces / Nos (नग / संख्या)</option>
-                                <option value="Rolls / Bundle">Rolls / Bundle (बंडल / रोल)</option>
-                                <option value="Litre">Litre (लीटर)</option>
-                                <option value="Gram (g)">Gram (ग्राम / g)</option>
-                                <option value="Other">Other (अन्य)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" id="lbl-quantity-title">Quantity (मात्रा)</label>
-                            <input type="number" id="quantity" step="any" min="0" placeholder="0" oninput="calculateTotal()" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" id="lbl-rate-title">Rate per Unit (दर ₹)</label>
-                            <input type="number" id="rate" step="any" min="0" placeholder="0" oninput="calculateTotal()" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Labour Payment Input Section -->
-                <div id="section-labour" class="hidden space-y-4 pt-2">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_work_title">Contractor / Work Name (ठेकेदार / काम नाम)</label>
-                            <input type="text" id="contractor-name" placeholder="e.g. Plaster Work (Ramesh Contractor)" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_payment_amount">Payment Amount (भुगतान राशि ₹)</label>
-                            <input type="number" id="labour-payment-amount" step="any" min="0" placeholder="0" oninput="calculateTotal()" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Date, Payment Mode, Computation Display & Remarks -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-100 pt-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_date">Date (तारीख)</label>
-                        <input type="date" id="entry-date" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_payment_mode">Payment Mode (भुगतान माध्यम)</label>
-                        <select id="payment-mode" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Cash">Cash (नकद)</option>
-                            <option value="UPI / Online">UPI / PhonePe / PayTM</option>
-                            <option value="Bank Transfer">Bank Transfer (बैंक ट्रान्सफर)</option>
-                            <option value="Cheque">Cheque (चेक)</option>
-                        </select>
-                    </div>
-                    <div class="bg-indigo-50/70 p-3 rounded-xl border border-indigo-100 flex flex-col justify-center">
-                        <span class="text-xs font-semibold text-indigo-700 uppercase" data-i18n="lbl_computed_total">Total Calculation (कुल राशि)</span>
-                        <span class="text-xl font-bold text-indigo-900" id="computed-total">₹0</span>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_remarks">Notes / Remarks (विवरण/टिप्पणी)</label>
-                    <input type="text" id="remarks" placeholder="Optional details (e.g., Bill No., Store name)" class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                </div>
-
-                <!-- Submit & Cancel Buttons -->
-                <div class="flex items-center space-x-3 pt-2">
-                    <button type="submit" id="btn-submit" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-plus-circle"></i>
-                        <span data-i18n="btn_save_entry">Save Entry (दर्ज करें)</span>
-                    </button>
-                    <button type="button" id="btn-cancel" onclick="resetForm()" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-xl transition">
-                        <span data-i18n="btn_cancel">Cancel</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <!-- Contractor Contracts Management Card (Right Column) -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
-                    <div class="flex items-center space-x-2">
-                        <i class="fa-solid fa-file-contract text-amber-600 text-lg"></i>
-                        <h2 class="text-lg font-bold text-slate-900" data-i18n="contract_setup_title">Labour Contracts Setup (ठेका राशि)</h2>
-                    </div>
-                </div>
-                <p class="text-xs text-slate-500 mb-4" data-i18n="contract_setup_subtitle">
-                    Set agreed contract amounts to auto-calculate remaining balance.
-                </p>
-
-                <!-- Add Contract Form -->
-                <form onsubmit="handleContractSetup(event)" class="space-y-3 bg-slate-50 p-3.5 rounded-xl border border-slate-200 mb-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_contract_category">Category / Work (काम/ठेका)</label>
-                        <select id="contract-category" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-                            <option value="contractor">Contractor Work (ठेकेदार - चुनाई व प्लास्टर)</option>
-                            <option value="electricity">Electricity Work (बिजली ठेका)</option>
-                            <option value="plumber">Plumbing Work (प्लंबर ठेका)</option>
-                            <option value="putai">Putai & Painting (पुताई ठेका)</option>
-                            <option value="furniture">Carpentry / Furniture (फर्नीचर ठेका)</option>
-                            <option value="other">Other Work (अन्य ठेका)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1" data-i18n="lbl_contract_amount">Amount (राशि ₹)</label>
-                        <input type="number" id="contract-total-amount" min="0" placeholder="e.g. 50000" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-                    </div>
-                    
-                    <!-- Action Mode (Add or Overwrite) -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Action Type (कार्रवाई प्रकार)</label>
-                        <select id="contract-action-type" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-amber-500">
-                            <option value="add">➕ Add Amount to Existing (पुरानी राशि में जोड़ें)</option>
-                            <option value="overwrite">🔄 Overwrite (नई राशि से बदलें)</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-3 rounded-lg text-xs shadow transition flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-check"></i>
-                        <span data-i18n="btn_save_contract">Save Contract Value</span>
-                    </button>
-                </form>
-
-                <!-- Active Contracts Overview List -->
-                <h3 class="text-xs font-bold text-slate-700 uppercase mb-2" data-i18n="active_contracts">Contract Balances Overview</h3>
-                <div id="contracts-list" class="space-y-2 max-h-56 overflow-y-auto pr-1">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-
-            <div class="pt-4 border-t border-slate-100 text-xs text-slate-400 text-center">
-                <span data-i18n="storage_info">🔒 Data saved locally in your browser</span>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Aggregated Items Summary Table -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <div>
-                <h2 class="text-lg font-bold text-slate-900" data-i18n="aggregated_summary_title">Item Preset Quantity & Amount Aggregated Summary (सामग्री कुल मात्रा एवं राशि)</h2>
-                <p class="text-xs text-slate-500" data-i18n="aggregated_summary_subtitle">Total accumulated quantity bought vs returned and overall net cost grouped strictly by Select Item Preset.</p>
-            </div>
-            <div class="bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 text-xs text-indigo-700 font-medium self-start sm:self-auto">
-                <i class="fa-solid fa-calculator mr-1"></i> Grouped by Select Item Preset
-            </div>
-        </div>
-
-        <div class="p-5">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="aggregated-items-grid">
-                <!-- Populated dynamically via JS -->
-            </div>
-            <div id="aggregated-empty-state" class="hidden text-center py-6 text-slate-400 text-xs italic">
-                No material or item purchases recorded yet. Add items above to see calculated totals!
-            </div>
-        </div>
-    </div>
-
-    <!-- Transaction History & Ledger Table Section -->
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <!-- Table Controls Header -->
-        <div class="p-5 border-b border-slate-100 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <h2 class="text-lg font-bold text-slate-900" data-i18n="ledger_title">Transaction History & Ledgers (खाता / लेजर)</h2>
-                <p class="text-xs text-slate-500" data-i18n="ledger_subtitle">View, filter, edit or manage all construction expenses.</p>
-            </div>
-
-            <!-- Filters -->
-            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                <select id="filter-type" onchange="renderTable()" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option value="all" data-i18n="filter_all_types">All Types (सभी लेन-देन)</option>
-                    <option value="buy">🛒 Buy Only (खरीद)</option>
-                    <option value="return">🔄 Returns Only (रिटर्न)</option>
-                    <option value="labour">👷 Labour Payments (मजदूरी)</option>
-                </select>
-
-                <select id="filter-category" onchange="renderTable()" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    <option value="all" data-i18n="filter_all_cats">All Categories (सभी श्रेणियां)</option>
-                    <option value="material">Material (सामग्री)</option>
-                    <option value="contractor">Contractor (ठेकेदार)</option>
-                    <option value="transport">Transport (भाड़ा/परिवहन)</option>
-                    <option value="electricity">Electricity (इलेक्ट्रिक)</option>
-                    <option value="plumber">Plumber (प्लंबर)</option>
-                    <option value="furniture">Furniture (फर्नीचर)</option>
-                    <option value="putai">Putai (पुताई)</option>
-                    <option value="other">Other (अन्य)</option>
-                </select>
-
-                <div class="relative">
-                    <input type="text" id="search-input" onkeyup="renderTable()" placeholder="Search item, contractor..." class="bg-slate-50 border border-slate-300 rounded-xl pl-8 pr-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 w-36 sm:w-48">
-                    <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Ledger Table -->
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse text-xs sm:text-sm">
-                <thead>
-                    <tr class="bg-slate-50 text-slate-600 uppercase font-semibold text-xs border-b border-slate-200">
-                        <th class="py-3.5 px-4" data-i18n="th_date">Date</th>
-                        <th class="py-3.5 px-4" data-i18n="th_type">Type</th>
-                        <th class="py-3.5 px-4" data-i18n="th_category">Category</th>
-                        <th class="py-3.5 px-4" data-i18n="th_details">Item Preset / Details</th>
-                        <th class="py-3.5 px-4 text-center" data-i18n="th_qty">Qty & Rate</th>
-                        <th class="py-3.5 px-4 text-right" data-i18n="th_freight">Freight</th>
-                        <th class="py-3.5 px-4 text-right" data-i18n="th_total">Total Amount</th>
-                        <th class="py-3.5 px-4 text-center" data-i18n="th_actions">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body" class="divide-y divide-slate-100 text-slate-700">
-                    <!-- Entries rendered dynamically -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Empty Table State -->
-        <div id="empty-state" class="hidden text-center py-12">
-            <i class="fa-solid fa-folder-open text-4xl text-slate-300 mb-3"></i>
-            <p class="text-sm text-slate-500" data-i18n="no_entries">No transaction entries found. Start by adding one above!</p>
-        </div>
-    </div>
-
-</main>
-
-<!-- Footer -->
-<footer class="bg-slate-100 border-t border-slate-200 mt-12 py-4 text-center text-xs text-slate-500">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <span>© Ghar Nirman Construction Cost & Budget Manager</span>
-        <button onclick="confirmResetAll()" class="text-rose-600 hover:text-rose-800 font-medium text-xs flex items-center gap-1">
-            <i class="fa-solid fa-trash-can"></i>
-            <span data-i18n="reset_all_data">Reset All Data</span>
+      <div class="top-actions">
+        <button type="button" class="btn btn-ghost" onclick="toggleLang()">
+          <span id="ui-lang-btn">हिंदी</span>
         </button>
-    </div>
-</footer>
+        <button type="button" class="btn btn-info-soft" onclick="exportBackup()">
+          <span id="ui-backup-btn">Backup</span>
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="triggerImport()">
+          <span id="ui-import-btn">Import</span>
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="exportCSV()">CSV</button>
 
-<!-- Modal Dialog -->
-<div id="modal-container" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 text-center space-y-4">
-        <div id="modal-icon" class="mx-auto w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-        </div>
-        <h3 id="modal-title" class="text-lg font-bold text-slate-900">Confirm Action</h3>
-        <p id="modal-text" class="text-xs text-slate-600">Are you sure you want to proceed?</p>
-        <div class="flex space-x-3 pt-2">
-            <button id="modal-btn-confirm" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition">Confirm</button>
-            <button onclick="closeModal()" class="flex-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-2 px-4 rounded-xl text-xs transition">Cancel</button>
-        </div>
+        <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="handleImportFile(event)" />
+      </div>
     </div>
-</div>
+  </header>
 
-<!-- Script -->
+  <div id="toast" class="toast"></div>
+
+<main class="container">
+    <!-- KPI Row -->
+    <section class="kpi-grid" id="sec-kpis">
+      <div class="kpi-card hero">
+        <div class="kpi-label" id="ui-kpi-total-lbl">कुल खर्च (Total Spent)</div>
+        <div class="kpi-val" id="kpi-total">₹0</div>
+        <div class="kpi-sub" id="ui-kpi-total-sub">नेट सामग्री + मजदूरी + भाड़ा</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label" id="ui-kpi-mat-lbl">नेट सामग्री (Material)</div>
+        <div class="kpi-val" id="kpi-material" style="color: var(--buy);">₹0</div>
+        <div class="kpi-sub" id="kpi-material-sub">खरीद: ₹0 • वापसी: -₹0</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label" id="ui-kpi-trans-lbl">भाड़ा (Transport)</div>
+        <div class="kpi-val" id="kpi-transport" style="color: var(--info);">₹0</div>
+        <div class="kpi-sub" id="ui-kpi-trans-sub">ट्रक / ट्रॉली / लोडिंग</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label" id="ui-kpi-paid-lbl">मजदूरी दी (Paid)</div>
+        <div class="kpi-val" id="kpi-paid" style="color: var(--lab);">₹0</div>
+        <div class="kpi-sub" id="kpi-paid-sub">तय ठेका: ₹0</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label" id="ui-kpi-due-lbl">मजदूरी बकाया (Due)</div>
+        <div class="kpi-val" id="kpi-due" style="color: var(--ret);">₹0</div>
+        <div class="kpi-sub" id="ui-kpi-due-sub">तय राशि - भुगतान</div>
+      </div>
+    </section>
+
+    <!-- Entry Form + Contract Tracker -->
+    <section class="workspace-grid">
+      <div class="card" id="sec-form">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" id="ui-form-title">New Entry</h2>
+            <div class="card-sub" id="ui-form-sub">Record purchases, returns or labour payments</div>
+          </div>
+          <span id="form-mode-badge" class="badge badge-new">NEW</span>
+        </div>
+
+        <form id="ledger-form" onsubmit="submitEntry(event)">
+          <input type="hidden" id="edit-id" />
+
+          <div class="field" style="margin-bottom: 12px;">
+            <label id="ui-lbl-type">लेन-देन प्रकार</label>
+            <div class="seg-group">
+              <button type="button" id="seg-buy" class="seg-btn active-buy" onclick="selectType('buy')">🛒 खरीद (Buy)</button>
+              <button type="button" id="seg-return" class="seg-btn" onclick="selectType('return')">🔄 वापसी (Return)</button>
+              <button type="button" id="seg-labour" class="seg-btn" onclick="selectType('labour')">👷 मजदूरी (Labour)</button>
+            </div>
+            <select id="f-type" class="hidden" onchange="onTypeChanged()">
+              <option value="buy" selected>buy</option>
+              <option value="return">return</option>
+              <option value="labour">labour</option>
+            </select>
+          </div>
+
+          <div class="form-grid two" style="margin-bottom: 12px;">
+            <div class="field">
+              <label id="ui-lbl-cat">श्रेणी (Category)</label>
+              <select id="f-category" onchange="onCategoryChanged()">
+                <option value="material">सामग्री (Material)</option>
+                <option value="contractor">ठेकेदार (Contractor)</option>
+                <option value="transport">भाड़ा (Transport)</option>
+                <option value="electricity">बिजली (Electricity)</option>
+                <option value="plumber">प्लंबर (Plumber)</option>
+                <option value="furniture">फर्नीचर (Furniture)</option>
+                <option value="putai">पुताई / पेंट (Putai)</option>
+                <option value="other">अन्य (Other)</option>
+              </select>
+            </div>
+
+            <div class="field" id="preset-field">
+              <label id="ui-lbl-preset">आइटम / काम चुनें</label>
+              <select id="f-preset" onchange="onPresetChanged()"></select>
+            </div>
+          </div>
+
+          <div id="goods-fields">
+            <div class="field" style="margin-bottom: 12px;">
+              <label id="ui-lbl-details">ब्रांड / विवरण (Details)</label>
+              <input type="text" id="f-details" placeholder="जैसे: UltraTech Cement, 12mm सरिया, बालू..." />
+            </div>
+
+            <div id="qty-rate-grid" class="form-grid three" style="margin-bottom: 12px;">
+              <div class="field" id="unit-field">
+                <label id="ui-lbl-unit">इकाई (Unit)</label>
+                <select id="f-unit" onchange="calcPreview()">
+                  <option value="Bags">Bags (बोरी)</option>
+                  <option value="Ton">Ton (टन)</option>
+                  <option value="Kg">Kg (किग्रा)</option>
+                  <option value="Quintal">Quintal (क्विंटल)</option>
+                  <option value="Truck / Trolley">Truck / Trolley</option>
+                  <option value="Cu.Ft">Cu.Ft (घन फीट)</option>
+                  <option value="Brass">Brass (ब्रास)</option>
+                  <option value="Pieces / Nos">Pieces / Nos</option>
+                  <option value="Rolls / Bundle">Rolls / Bundle</option>
+                  <option value="Litre">Litre (लीटर)</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="field" id="qty-field">
+                <label id="ui-lbl-qty">मात्रा (Qty)</label>
+                <input type="number" id="f-qty" step="any" min="0" inputmode="decimal" placeholder="0" oninput="calcPreview()" />
+              </div>
+
+              <div class="field" id="rate-field">
+                <label id="ui-lbl-rate">दर (Rate ₹)</label>
+                <input type="number" id="f-rate" step="any" min="0" inputmode="decimal" placeholder="0" oninput="calcPreview()" />
+              </div>
+            </div>
+
+            <div id="transport-amt-field" class="field hidden" style="margin-bottom: 12px;">
+              <label id="ui-lbl-transport-amt">भाड़ा राशि (Amount ₹)</label>
+              <input type="number" id="f-transport-amt" step="any" min="0" inputmode="decimal" placeholder="0" oninput="calcPreview()" />
+            </div>
+          </div>
+
+          <div id="labour-fields" class="hidden">
+            <div class="form-grid two" style="margin-bottom: 12px;">
+              <div class="field">
+                <label id="ui-lbl-contractor">ठेकेदार / काम का नाम</label>
+                <input type="text" id="f-contractor" placeholder="जैसे: रमेश ठेकेदार - प्लास्टर" />
+              </div>
+
+              <div class="field">
+                <label id="ui-lbl-labour-amt">भुगतान राशि (₹)</label>
+                <input type="number" id="f-labour-amt" step="any" min="0" inputmode="decimal" placeholder="0" oninput="calcPreview()" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-grid two" style="margin-bottom: 12px;">
+            <div class="field">
+              <label id="ui-lbl-date">तारीख (Date)</label>
+              <input type="date" id="f-date" required />
+            </div>
+
+            <div class="field">
+              <label id="ui-lbl-mode">भुगतान माध्यम</label>
+              <select id="f-mode">
+                <option value="Cash">Cash (नकद)</option>
+                <option value="UPI">UPI / Online</option>
+                <option value="Bank">Bank Transfer</option>
+                <option value="Cheque">Cheque</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label id="ui-lbl-remarks">टिप्पणी / बिल नंबर</label>
+            <input type="text" id="f-remarks" placeholder="दुकान का नाम या बिल नंबर (वैकल्पिक)" />
+          </div>
+
+          <div class="total-bar">
+            <div>
+              <div style="font-size: 11px; color: #cbd5e1;" id="ui-lbl-total">कुल राशि</div>
+              <div class="amt" id="f-total-preview">₹0</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" id="btn-cancel-edit" class="btn btn-ghost hidden" onclick="resetForm()">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-form">
+                <span id="ui-save-btn">Save Entry</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Contracts Panel -->
+      <div class="card" id="sec-contracts">
+        <div class="card-head">
+          <div>
+            <h2 class="card-title" id="ui-contract-title">Contracts & Balance</h2>
+            <div class="card-sub" id="ui-contract-sub">तय ठेका राशि सेट करें, बकाया स्वतः गिनेगा</div>
+          </div>
+        </div>
+
+        <form onsubmit="saveContract(event)" style="margin-bottom: 14px;">
+          <div class="form-grid two" style="margin-bottom: 10px;">
+            <div class="field">
+              <label id="ui-lbl-c-cat">ठेका श्रेणी</label>
+              <select id="c-category">
+                <option value="contractor">ठेकेदार (Contractor)</option>
+                <option value="electricity">बिजली (Electricity)</option>
+                <option value="plumber">प्लंबर (Plumber)</option>
+                <option value="putai">पुताई (Putai)</option>
+                <option value="furniture">फर्नीचर (Furniture)</option>
+                <option value="other">अन्य (Other)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label id="ui-lbl-c-amt">राशि (₹)</label>
+              <input type="number" id="c-amount" step="any" min="0" inputmode="decimal" placeholder="50000" />
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 8px;">
+            <select id="c-action" style="border: 1px solid #cbd5e1; border-radius: 10px; padding: 8px 10px; font-weight: 700; font-size: 12px; background: var(--surface-alt);">
+              <option value="add">+ जोड़ें (Add)</option>
+              <option value="set">= सेट करें (Set)</option>
+            </select>
+            <button type="submit" class="btn btn-secondary" style="flex: 1;" id="ui-c-save-btn">ठेका राशि सेव करें</button>
+          </div>
+        </form>
+
+        <div id="contracts-container"></div>
+      </div>
+    </section>
+
+    <!-- Category Summary Section -->
+    <section class="card" id="sec-summary">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title" id="ui-sum-title">Category & Item Summary</h2>
+          <div class="card-sub" id="ui-sum-sub">Purchases, returns, and net quantities</div>
+        </div>
+        <button type="button" class="btn btn-secondary" id="btn-toggle-summary" onclick="toggleSummaryEntries()">
+          <span id="ui-sum-toggle-txt">Show Entries</span>
+        </button>
+      </div>
+
+      <div id="summary-body-wrap" class="hidden">
+      <div class="filters-row">
+        <select id="sum-cat" onchange="renderSummary()">
+          <option value="all">All Categories</option>
+          <option value="material">Material</option>
+          <option value="contractor">Contractor</option>
+          <option value="transport">Transport</option>
+          <option value="electricity">Electricity</option>
+          <option value="plumber">Plumber</option>
+          <option value="furniture">Furniture</option>
+          <option value="putai">Putai</option>
+          <option value="other">Other</option>
+        </select>
+
+        <select id="sum-preset" onchange="renderSummary()">
+          <option value="all">All Items</option>
+        </select>
+      </div>
+      <div id="summary-container"></div>
+      </div>
+    </section>
+
+    <!-- Transaction Ledger Section -->
+    <section class="card" id="sec-ledger">
+      <div class="card-head">
+        <div>
+          <h2 class="card-title">
+            <span id="ui-ledger-title">Transaction Ledger</span>
+            <span id="ledger-count" class="badge badge-new">0 Entries</span>
+          </h2>
+          <div class="card-sub" id="ui-ledger-sub">All recorded transactions in one place</div>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-toggle-ledger" onclick="toggleLedgerEntries()">
+          <span id="ui-ledger-toggle-txt">Show Entries</span>
+        </button>
+      </div>
+
+      <div id="ledger-body-wrap" class="hidden">
+      <div id="export-status-bar" class="hidden" style="margin-bottom:10px; padding:9px 12px; border-radius:10px; background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+        <span id="export-status-text"></span>
+        <button type="button" class="btn btn-info-soft" style="padding:4px 9px; font-size:11px;" onclick="downloadHTMLSnapshot()">HTML Snapshot</button>
+      </div>
+      <div class="ledger-strip">
+        <div>
+          <div style="font-size: 10px; color: var(--muted); font-weight: 700;">BUY</div>
+          <div id="strip-buy" style="font-weight: 800; color: var(--buy);">₹0</div>
+        </div>
+        <div>
+          <div style="font-size: 10px; color: var(--muted); font-weight: 700;">RETURN</div>
+          <div id="strip-return" style="font-weight: 800; color: var(--ret);">₹0</div>
+        </div>
+        <div>
+          <div style="font-size: 10px; color: var(--muted); font-weight: 700;">LABOUR</div>
+          <div id="strip-labour" style="font-weight: 800; color: var(--lab);">₹0</div>
+        </div>
+        <div>
+          <div style="font-size: 10px; color: var(--muted); font-weight: 700;">NET</div>
+          <div id="strip-net" style="font-weight: 800; color: var(--ink);">₹0</div>
+        </div>
+      </div>
+
+      <div class="filters-row">
+        <input type="text" id="q-search" oninput="renderLedger()" placeholder="खोजें: Cement, Sariya, नाम, बिल..." />
+        <select id="q-type" onchange="renderLedger()">
+          <option value="all">All Types</option>
+          <option value="buy">Buy</option>
+          <option value="return">Return</option>
+          <option value="labour">Labour</option>
+        </select>
+        <select id="q-cat" onchange="onLedgerCatChanged()">
+          <option value="all">All Categories</option>
+          <option value="material">Material</option>
+          <option value="contractor">Contractor</option>
+          <option value="transport">Transport</option>
+          <option value="electricity">Electricity</option>
+          <option value="plumber">Plumber</option>
+          <option value="furniture">Furniture</option>
+          <option value="putai">Putai</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="q-preset" onchange="renderLedger()">
+          <option value="all">All Items</option>
+        </select>
+      </div>
+
+      <div id="ledger-list" class="entry-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="bottom-reset-wrap" style="max-width: 1180px; margin: 4px auto 14px; padding: 0 16px; display: flex; justify-content: flex-end;">
+    <button type="button" class="btn btn-danger-soft" onclick="resetEverything()" style="padding: 9px 16px; font-size: 12px;">
+      <span>🗑️</span>
+      <span id="ui-reset-btn">Reset All Data</span>
+    </button>
+  </div>
+
+  <nav class="bottom-nav">
+    <button type="button" class="nav-item active" id="mnav-all" onclick="mobileView('all')">
+      <span>🏠</span>
+      <span>All</span>
+    </button>
+    <button type="button" class="nav-item" id="mnav-add" onclick="mobileView('add')">
+      <span>➕</span>
+      <span>Add</span>
+    </button>
+    <button type="button" class="nav-item" id="mnav-summary" onclick="mobileView('summary')">
+      <span>📊</span>
+      <span>Summary</span>
+    </button>
+    <button type="button" class="nav-item" id="mnav-ledger" onclick="mobileView('ledger')">
+      <span>📒</span>
+      <span>Ledger</span>
+    </button>
+  </nav>
+
+
 <script>
-    let currentLang = 'hi';
-    let entries = [];
-    let contracts = {};
+    const STORAGE_KEY_ENTRIES = 'gn_v1_entries';
+    const STORAGE_KEY_CONTRACTS = 'gn_v1_contracts';
+    const STORAGE_KEY_LANG = 'gn_v1_lang';
 
-    const subCategoryData = {
-        material: [
-            { id: "cement", en: "Cement (सीमेंट)", hi: "Cement (सीमेंट)", defaultUnit: "Bags" },
-            { id: "sand", en: "Sand / Ret (रेत/बालू)", hi: "Sand / Ret (रेत/बालू)", defaultUnit: "Truck / Trolley" },
-            { id: "gitti", en: "Gitti / Aggregate (गिट्टी)", hi: "Gitti / Aggregate (गिट्टी)", defaultUnit: "Truck / Trolley" },
-            { id: "sariya", en: "Sariya / Rebar (सरिया)", hi: "Sariya / Rebar (सरिया)", defaultUnit: "Ton" },
-            { id: "bricks", en: "Bricks / Eente (ईंटें)", hi: "Bricks / Eente (ईंटें)", defaultUnit: "Pieces / Nos" },
-            { id: "crusher_dust", en: "Crusher Dust (क्रशर डस्ट)", hi: "Crusher Dust (क्रशर डस्ट)", defaultUnit: "Cu.Ft (घन फीट)" },
-            { id: "binding_wire", en: "Binding Wire (बाइंडिंग वायर)", hi: "Binding Wire (बाइंडिंग वायर)", defaultUnit: "Ton" },
-            { id: "other_mat", en: "Other Material (अन्य सामग्री)", hi: "Other Material (अन्य सामग्री)", defaultUnit: "Other" }
-        ],
-        contractor: [
-            { id: "plaster_work", en: "Plaster Work (प्लास्टर काम)", hi: "Plaster Work (प्लास्टर काम)", defaultUnit: "Other" },
-            { id: "brick_masonry", en: "Brickwork / Chunai (ईंट चुनाई काम)", hi: "Brickwork / Chunai (ईंट चुनाई काम)", defaultUnit: "Other" },
-            { id: "rcc_slab", en: "Slab / Lenter Casting (लेंटर/छत ढलाई)", hi: "Slab / Lenter Casting (लेंटर/छत ढलाई)", defaultUnit: "Other" },
-            { id: "foundation", en: "Foundation Work (नींव भराई काम)", hi: "Foundation Work (नींव भराई काम)", defaultUnit: "Other" },
-            { id: "contractor_other", en: "Other Contractor Work (अन्य ठेका काम)", hi: "Other Contractor Work (अन्य ठेका काम)", defaultUnit: "Other" }
-        ],
-        transport: [
-            { id: "truck_trolley", en: "Truck / Trolley Freight (ट्रक/ट्रॉली भाड़ा)", hi: "Truck / Trolley Freight (ट्रक/ट्रॉली भाड़ा)", defaultUnit: "Truck / Trolley" },
-            { id: "loading_unloading", en: "Loading / Unloading (हमाली/लोडिंग-अनलोडिंग)", hi: "Loading / Unloading (हमाली/लोडिंग-अनलोडिंग)", defaultUnit: "Pieces / Nos" },
-            { id: "pickup_auto", en: "Pickup / Auto Fare (पिकअप/ऑटो किराया)", hi: "Pickup / Auto Fare (पिकअप/ऑटो किराया)", defaultUnit: "Pieces / Nos" },
-            { id: "crane_lift", en: "Crane / Lift Charges (क्रेन/लिफ्ट भाड़ा)", hi: "Crane / Lift Charges (क्रेन/लिफ्ट भाड़ा)", defaultUnit: "Pieces / Nos" },
-            { id: "other_transport", en: "Other Transport (अन्य भाड़ा/परिवहन)", hi: "Other Transport (अन्य भाड़ा)", defaultUnit: "Other" }
-        ],
-        electricity: [
-            { id: "wires", en: "Wires & Cables (वायर/केबल)", hi: "Wires & Cables (वायर/केबल)", defaultUnit: "Rolls / Bundle" },
-            { id: "conduits", en: "Conduits / PVC Pipes (पाइप/कंड्यूट)", hi: "Conduits / PVC Pipes (पाइप/कंड्यूट)", defaultUnit: "Pieces / Nos" },
-            { id: "switches", en: "Switches & Sockets (स्विच/सॉकेट)", hi: "Switches & Sockets (स्विच/सॉकेट)", defaultUnit: "Pieces / Nos" },
-            { id: "mcb_box", en: "MCB Box & Cutouts (एमसीबी बॉक्स)", hi: "MCB Box & Cutouts (एमसीबी बॉक्स)", defaultUnit: "Pieces / Nos" },
-            { id: "lights", en: "LED Lights / Fittings (एलईडी लाइट्स)", hi: "LED Lights / Fittings (एलईडी लाइट्स)", defaultUnit: "Pieces / Nos" },
-            { id: "fans", en: "Fans / Exhaust (पंखा/एग्जॉस्ट)", hi: "Fans / Exhaust (पंखा/एग्जॉस्ट)", defaultUnit: "Pieces / Nos" },
-            { id: "other_elec", en: "Other Electrical (अन्य इलेक्ट्रिक समान)", hi: "Other Electrical (अन्य)", defaultUnit: "Other" }
-        ],
-        plumber: [
-            { id: "cpvc_pipes", en: "CPVC / UPVC Pipes (सीपीवीसी/यूपीवीसी पाइप)", hi: "CPVC / UPVC Pipes (सीपीवीसी पाइप)", defaultUnit: "Pieces / Nos" },
-            { id: "water_tank", en: "Water Tank (पानी की टंकी)", hi: "Water Tank (पानी की टंकी)", defaultUnit: "Pieces / Nos" },
-            { id: "taps", en: "Taps & Faucets (नल/टोटी)", hi: "Taps & Faucets (नल/टोटी)", defaultUnit: "Pieces / Nos" },
-            { id: "fittings", en: "Elbows/Tees/Fittings (फिटिंग्स/एल्बो)", hi: "Elbows/Tees/Fittings (फिटिंग्स/एल्बो)", defaultUnit: "Pieces / Nos" },
-            { id: "other_plumb", en: "Other Plumbing Item (अन्य प्लंबिंग समान)", hi: "Other Plumbing Item (अन्य)", defaultUnit: "Other" }
-        ],
-        furniture: [
-            { id: "plywood", en: "Ply Board / Plywood (प्लाई बोर्ड / प्लाइवुड)", hi: "Ply Board / Plywood (प्लाई बोर्ड)", defaultUnit: "Pieces / Nos" },
-            { id: "sunmica", en: "Sunmica / Laminate (सनमाइका/लैमिनेट)", hi: "Sunmica / Laminate (सनमाइका)", defaultUnit: "Pieces / Nos" },
-            { id: "teak_wood", en: "Wood / Sagwan (लकड़ी/सागौन)", hi: "Wood / Sagwan (लकड़ी/सागौन)", defaultUnit: "Cu.Ft (घन फीट)" },
-            { id: "hardware", en: "Hinges/Locks/Hardware (कब्जे/ताले)", hi: "Hinges/Locks (कब्जे/ताले)", defaultUnit: "Pieces / Nos" },
-            { id: "glue", en: "Fevicol / Adhesive (फेविकोल/गोंद)", hi: "Fevicol / Adhesive (फेविकोल)", defaultUnit: "Gram (g)" },
-            { id: "other_furn", en: "Other Furniture Item (अन्य फर्नीचर समान)", hi: "Other Furniture (अन्य)", defaultUnit: "Other" }
-        ],
-        putai: [
-            { id: "wall_putty", en: "Wall Putty (वॉल पुट्टी)", hi: "Wall Putty (वॉल पुट्टी)", defaultUnit: "Bags" },
-            { id: "primer", en: "Primer (प्राइमर)", hi: "Primer (प्राइमर)", defaultUnit: "Litre" },
-            { id: "emulsion", en: "Emulsion Paint (इमल्शन पेंट)", hi: "Emulsion Paint (इमल्शन पेंट)", defaultUnit: "Litre" },
-            { id: "brushes", en: "Brushes / Rollers (ब्रश/रोलर)", hi: "Brushes / Rollers (ब्रश/रोलर)", defaultUnit: "Pieces / Nos" },
-            { id: "other_paint", en: "Other Paint Item (अन्य पुताई समान)", hi: "Other Paint Item (अन्य)", defaultUnit: "Other" }
-        ],
-        other: [
-            { id: "misc", en: "Miscellaneous Item (विविध समान)", hi: "Miscellaneous (विविध समान)", defaultUnit: "Other" }
-        ]
+    const PRESETS = {
+      material: [
+        { id: 'cement', hi: 'सीमेंट (Cement)', en: 'Cement', unit: 'Bags' },
+        { id: 'sariya', hi: 'सरिया (Sariya)', en: 'Sariya / Rebar', unit: 'Ton' },
+        { id: 'sand', hi: 'रेत / बालू (Sand)', en: 'Sand', unit: 'Truck / Trolley' },
+        { id: 'gitti', hi: 'गिट्टी (Gitti)', en: 'Gitti / Aggregate', unit: 'Truck / Trolley' },
+        { id: 'bricks', hi: 'ईंटें (Bricks)', en: 'Bricks', unit: 'Pieces / Nos' },
+        { id: 'dust', hi: 'क्रशर डस्ट (Dust)', en: 'Crusher Dust', unit: 'Cu.Ft' },
+        { id: 'wire_bind', hi: 'बाइंडिंग वायर', en: 'Binding Wire', unit: 'Kg' },
+        { id: 'other_mat', hi: 'अन्य सामग्री', en: 'Other Material', unit: 'Other' }
+      ],
+      contractor: [
+        { id: 'plaster', hi: 'प्लास्टर काम', en: 'Plaster Work', unit: 'Other' },
+        { id: 'chunai', hi: 'ईंट चुनाई काम', en: 'Brickwork / Chunai', unit: 'Other' },
+        { id: 'slab', hi: 'लेंटर / छत ढलाई', en: 'Slab Casting', unit: 'Other' },
+        { id: 'foundation', hi: 'नींव काम', en: 'Foundation Work', unit: 'Other' },
+        { id: 'other_cont', hi: 'अन्य ठेका काम', en: 'Other Contractor', unit: 'Other' }
+      ],
+      transport: [
+        { id: 'freight_trip', hi: 'ट्रक / ट्रॉली भाड़ा', en: 'Truck / Trolley Freight', unit: 'Truck / Trolley' },
+        { id: 'loading', hi: 'लोडिंग / हमाली', en: 'Loading / Unloading', unit: 'Pieces / Nos' },
+        { id: 'auto_pickup', hi: 'पिकअप / ऑटो भाड़ा', en: 'Pickup / Auto', unit: 'Pieces / Nos' },
+        { id: 'other_trans', hi: 'अन्य भाड़ा', en: 'Other Transport', unit: 'Other' }
+      ],
+      electricity: [
+        { id: 'wires', hi: 'वायर / केबल', en: 'Wires & Cables', unit: 'Rolls / Bundle' },
+        { id: 'pipes_elec', hi: 'पाइप / कंड्यूट', en: 'Conduit Pipes', unit: 'Pieces / Nos' },
+        { id: 'switches', hi: 'स्विच / सॉकेट', en: 'Switches & Sockets', unit: 'Pieces / Nos' },
+        { id: 'mcb', hi: 'एमसीबी बॉक्स', en: 'MCB Box', unit: 'Pieces / Nos' },
+        { id: 'lights', hi: 'लाइट्स / फिटिंग', en: 'Lights & Fittings', unit: 'Pieces / Nos' },
+        { id: 'other_elec', hi: 'अन्य बिजली सामान', en: 'Other Electrical', unit: 'Other' }
+      ],
+      plumber: [
+        { id: 'cpvc', hi: 'सीपीवीसी / यूपीवीसी पाइप', en: 'CPVC / UPVC Pipes', unit: 'Pieces / Nos' },
+        { id: 'tank', hi: 'पानी की टंकी', en: 'Water Tank', unit: 'Pieces / Nos' },
+        { id: 'taps', hi: 'नल / फिटिंग्स', en: 'Taps & Fittings', unit: 'Pieces / Nos' },
+        { id: 'other_plumb', hi: 'अन्य प्लंबिंग', en: 'Other Plumbing', unit: 'Other' }
+      ],
+      furniture: [
+        { id: 'ply', hi: 'प्लाई बोर्ड', en: 'Plywood', unit: 'Pieces / Nos' },
+        { id: 'sunmica', hi: 'सनमाइका', en: 'Laminate / Sunmica', unit: 'Pieces / Nos' },
+        { id: 'wood', hi: 'लकड़ी / सागौन', en: 'Timber / Wood', unit: 'Cu.Ft' },
+        { id: 'hardware', hi: 'कब्जे / ताले / हार्डवेयर', en: 'Hardware', unit: 'Pieces / Nos' },
+        { id: 'other_furn', hi: 'अन्य फर्नीचर', en: 'Other Furniture', unit: 'Other' }
+      ],
+      putai: [
+        { id: 'putty', hi: 'वॉल पुट्टी', en: 'Wall Putty', unit: 'Bags' },
+        { id: 'primer', hi: 'प्राइमर', en: 'Primer', unit: 'Litre' },
+        { id: 'paint', hi: 'पेंट / इमल्शन', en: 'Paint / Emulsion', unit: 'Litre' },
+        { id: 'other_putai', hi: 'अन्य पुताई सामान', en: 'Other Putai', unit: 'Other' }
+      ],
+      other: [
+        { id: 'misc', hi: 'विविध (Misc)', en: 'Miscellaneous', unit: 'Other' }
+      ]
     };
 
-    // Helper: Look up canonical Preset Name from subCategoryData by category & presetId
-    function getCanonicalPresetName(category, presetId, fallbackName) {
-        if (!presetId) return fallbackName || 'Item Preset';
-        const list = subCategoryData[category] || [];
-        const found = list.find(item => item.id === presetId);
-        if (found) {
-            return found[currentLang] || found.en;
-        }
-        // Search across all categories if category doesn't match
-        for (const catKey of Object.keys(subCategoryData)) {
-            const match = subCategoryData[catKey].find(item => item.id === presetId);
-            if (match) return match[currentLang] || match.en;
-        }
-        if (typeof presetId === 'string' && presetId.startsWith('custom_')) {
-            return fallbackName || presetId.replace(/^custom_/, '');
-        }
-        return fallbackName || presetId || 'Item Preset';
+    const CAT_NAMES = {
+      material: { hi: 'सामग्री (Material)', en: 'Material' },
+      contractor: { hi: 'ठेकेदार (Contractor)', en: 'Contractor' },
+      transport: { hi: 'भाड़ा (Transport)', en: 'Transport' },
+      electricity: { hi: 'बिजली (Electricity)', en: 'Electricity' },
+      plumber: { hi: 'प्लंबर (Plumber)', en: 'Plumber' },
+      furniture: { hi: 'फर्नीचर (Furniture)', en: 'Furniture' },
+      putai: { hi: 'पुताई (Putai)', en: 'Putai' },
+      other: { hi: 'अन्य (Other)', en: 'Other' }
+    };
+
+    let state = {
+      lang: 'en',
+      entries: [],
+      contracts: {},
+      showSummary: false,
+      showLedger: false
+    };
+
+    function todayISO() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
-    // Helper: Infer presetId robustly for both new and legacy/backup entries
-    function resolveEntryPresetId(e) {
-        if (!e) return 'other_mat';
-
-        // 1. If presetId is already a valid known ID in subCategoryData, return it immediately
-        if (e.presetId) {
-            for (const catKey of Object.keys(subCategoryData)) {
-                if (subCategoryData[catKey].some(item => item.id === e.presetId)) {
-                    return e.presetId;
-                }
-            }
-            if (typeof e.presetId === 'string' && e.presetId.startsWith('custom_')) {
-                return e.presetId;
-            }
-        }
-
-        // 2. Match against presetName, preset, subCategory, itemPreset, details, itemName
-        const candidates = [e.presetName, e.preset, e.subCategory, e.itemPreset, e.details, e.itemName]
-            .filter(v => typeof v === 'string' && v.trim() !== '')
-            .map(v => v.trim().toLowerCase());
-
-        const catItems = subCategoryData[e.category] || [];
-        for (const cand of candidates) {
-            const exact = catItems.find(item =>
-                item.id.toLowerCase() === cand ||
-                item.en.toLowerCase() === cand ||
-                item.hi.toLowerCase() === cand ||
-                item.en.split('(')[0].trim().toLowerCase() === cand
-            );
-            if (exact) return exact.id;
-        }
-
-        // 3. Partial match in entry's own category (only when candidate has >= 3 chars so short strings don't false-match)
-        for (const cand of candidates) {
-            if (cand.length < 3) continue;
-            const partial = catItems.find(item => {
-                const baseEn = item.en.split('(')[0].trim().toLowerCase();
-                return (baseEn.length >= 3 && cand.includes(baseEn)) ||
-                       (cand.length >= 4 && item.en.toLowerCase().includes(cand));
-            });
-            if (partial) return partial.id;
-        }
-
-        // 4. Exact match across ALL categories
-        for (const catKey of Object.keys(subCategoryData)) {
-            const items = subCategoryData[catKey];
-            for (const cand of candidates) {
-                const exact = items.find(item =>
-                    item.id.toLowerCase() === cand ||
-                    item.en.toLowerCase() === cand ||
-                    item.hi.toLowerCase() === cand ||
-                    item.en.split('(')[0].trim().toLowerCase() === cand
-                );
-                if (exact) return exact.id;
-            }
-        }
-
-        // 5. Fallback: preserve presetName or details as its own distinct group instead of lumping into "Other"
-        const fallbackLabel = (e.presetName || e.preset || e.subCategory || e.details || '').trim();
-        if (fallbackLabel !== '') {
-            return 'custom_' + fallbackLabel.toLowerCase();
-        }
-        return 'other_mat';
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      if (!el) return;
+      el.textContent = msg;
+      el.style.display = 'block';
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        el.style.display = 'none';
+      }, 2200);
     }
 
-    const i18n = {
-        en: {
-            app_title: "Ghar Nirman Cost Manager",
-            app_subtitle: "House Construction Expense & Budget Manager",
-            btn_export: "Export CSV",
-            btn_backup: "Backup JSON",
-            btn_restore: "Restore Data",
-            lang_btn: "हिंदी में बदलें",
-            kpi_total_cost: "Total Spent",
-            kpi_total_cost_desc: "Purchases + Labour Paid + Freight",
-            kpi_material_cost: "Net Material Spent",
-            kpi_transport_cost: "Transport Cost",
-            kpi_transport_cost_desc: "Total Freight & Delivery",
-            kpi_labour_paid: "Labour Paid",
-            kpi_labour_pending: "Labour Pending",
-            kpi_labour_pending_desc: "Total Promised - Total Paid",
-            form_title: "New Transaction Entry",
-            lbl_type: "Transaction Type",
-            lbl_category: "Category",
-            lbl_select_item: "Select Item Preset",
-            lbl_item_name: "Item Details / Specification",
-            lbl_unit: "Unit",
-            lbl_quantity: "Quantity",
-            lbl_rate: "Rate per Unit (₹)",
-            lbl_work_title: "Contractor / Work Name",
-            lbl_payment_amount: "Payment Amount (₹)",
-            lbl_date: "Date",
-            lbl_payment_mode: "Payment Mode",
-            lbl_computed_total: "Total Calculation",
-            lbl_remarks: "Notes / Remarks",
-            btn_save_entry: "Save Entry",
-            btn_cancel: "Cancel",
-            contract_setup_title: "Labour Contract Values",
-            contract_setup_subtitle: "Set overall contract amounts to auto-calculate remaining balance.",
-            lbl_contract_category: "Category / Work",
-            lbl_contract_amount: "Amount (₹)",
-            btn_save_contract: "Save Contract Value",
-            active_contracts: "Contract Balances Overview",
-            storage_info: "🔒 Saved locally in browser storage",
-            aggregated_summary_title: "Item Preset Quantity & Amount Aggregated Summary",
-            aggregated_summary_subtitle: "Total accumulated quantity bought vs returned and overall net cost grouped strictly by Select Item Preset.",
-            ledger_title: "Transaction History & Ledgers",
-            ledger_subtitle: "View, filter, edit or manage all construction expenses.",
-            filter_all_types: "All Types",
-            filter_all_cats: "All Categories",
-            th_date: "Date",
-            th_type: "Type",
-            th_category: "Category",
-            th_details: "Item Preset / Details",
-            th_qty: "Qty & Rate",
-            th_freight: "Freight",
-            th_total: "Total Amount",
-            th_actions: "Actions",
-            no_entries: "No transaction entries found.",
-            reset_all_data: "Reset All Data"
-        },
-        hi: {
-            app_title: "घर निर्माण खर्च और बजट मैनेजर",
-            app_subtitle: "मकान बनाने के सभी खर्चों का पूरा हिसाब-किताब",
-            btn_export: "CSV डाउनलोड करें",
-            btn_backup: "बैकअप लें (Backup)",
-            btn_restore: "डाटा रिस्टोर करें",
-            lang_btn: "Switch to English",
-            kpi_total_cost: "कुल खर्च (Total Spent)",
-            kpi_total_cost_desc: "खरीद + मजदूरी भुगतान + भाड़ा",
-            kpi_material_cost: "सामग्री खर्च (Net Material)",
-            kpi_transport_cost: "कुल भाड़ा (Transport)",
-            kpi_transport_cost_desc: "परिवहन एवं हमाली शुल्क",
-            kpi_labour_paid: "मजदूरी भुगतान (Paid)",
-            kpi_labour_pending: "मजदूरी बाकी (Pending)",
-            kpi_labour_pending_desc: "कुल तय राशि - कुल भुगतान",
-            form_title: "नया लेन-देन दर्ज करें (Entry Form)",
-            lbl_type: "लेन-देन प्रकार (Transaction Type)",
-            lbl_category: "श्रेणी (Category)",
-            lbl_select_item: "सामग्री चुनें (Select Item Preset)",
-            lbl_item_name: "सामग्री नाम/विवरण (Item Details / Specification)",
-            lbl_unit: "इकाई (Unit)",
-            lbl_quantity: "मात्रा (Quantity)",
-            lbl_rate: "दर प्रति इकाई (Rate per Unit ₹)",
-            lbl_work_title: "ठेकेदार / काम का नाम",
-            lbl_payment_amount: "भुगतान राशि (Amount ₹)",
-            lbl_date: "तारीख (Date)",
-            lbl_payment_mode: "भुगतान माध्यम (Payment Mode)",
-            lbl_computed_total: "कुल राशि (Total Amount)",
-            lbl_remarks: "विवरण / टिप्पणी (Remarks)",
-            btn_save_entry: "एंट्री सेव करें",
-            btn_cancel: "रद्द करें",
-            contract_setup_title: "मजदूरी/ठेका की कुल राशि दर्ज करें",
-            contract_setup_subtitle: "ठेकेदार का कुल कॉन्ट्रैक्ट अमाउंट सेट करें ताकि बची राशि अपने आप घटती रहे।",
-            lbl_contract_category: "काम / ठेका श्रेणी",
-            lbl_contract_amount: "राशि (₹)",
-            btn_save_contract: "ठेका राशि सेट करें",
-            active_contracts: "ठेका एवं बकाया स्थिति (Contract Status)",
-            storage_info: "🔒 सभी डाटा आपके ब्राउज़र में सुरक्षित सेव है",
-            aggregated_summary_title: "सामग्री कुल मात्रा एवं राशि का पूरा हिसाब (Select Item Preset अनुसार)",
-            aggregated_summary_subtitle: "हर Select Item Preset की कुल खरीदी गई मात्रा (रिटर्न घटाकर) और कुल खर्च का विवरण।",
-            ledger_title: "लेन-देन खाता (Transaction Ledger)",
-            ledger_subtitle: "सभी सामग्री, मजदूरी एवं वापसी की सूची देखें या एडिट करें।",
-            filter_all_types: "सभी लेन-देन (All Types)",
-            filter_all_cats: "सभी श्रेणियां (All Categories)",
-            th_date: "तारीख",
-            th_type: "प्रकार",
-            th_category: "श्रेणी",
-            th_details: "Item Preset / विवरण",
-            th_qty: "मात्रा एवं दर",
-            th_freight: "भाड़ा",
-            th_total: "कुल राशि",
-            th_actions: "कार्रवाई",
-            no_entries: "कोई एंट्री उपलब्ध नहीं है। ऊपर फॉर्म से नई एंट्री दर्ज करें!",
-            reset_all_data: "पूरा डाटा रिसेट करें"
+    function readStore(k) {
+      try {
+        return localStorage.getItem(k);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function writeStore(k, v) {
+      try {
+        localStorage.setItem(k, v);
+        return true;
+      } catch (err) {
+        console.error('Storage write error:', err);
+        showToast(state.lang === 'hi'
+          ? 'स्टोरेज में सेव नहीं हो सका (कोटा/प्राइवेट मोड जाँचें)'
+          : 'Failed to save to storage (check storage quota/mode)');
+        return false;
+      }
+    }
+
+    function normalizeRecord(raw) {
+      const r = Object.assign({}, raw);
+      const validCats = Object.keys(PRESETS);
+      if (!validCats.includes(r.category)) {
+        const c = String(r.category || '').toLowerCase();
+        if (c.includes('mat') || c.includes('सामग्री')) r.category = 'material';
+        else if (c.includes('cont') || c.includes('ठेकेदार')) r.category = 'contractor';
+        else if (c.includes('trans') || c.includes('भाड़ा')) r.category = 'transport';
+        else if (c.includes('elec') || c.includes('बिजली')) r.category = 'electricity';
+        else if (c.includes('plumb') || c.includes('प्लंबर')) r.category = 'plumber';
+        else if (c.includes('furn') || c.includes('फर्नीचर')) r.category = 'furniture';
+        else if (c.includes('putai') || c.includes('paint') || c.includes('पुताई')) r.category = 'putai';
+        else r.category = 'other';
+      }
+
+      const list = PRESETS[r.category] || PRESETS.other;
+      if (r.type === 'labour') {
+        r.presetId = 'labour_work';
+        r.presetName = r.presetName || r.details || 'Labour';
+      } else {
+        const matched = list.find(p => p.id === r.presetId)
+          || Object.values(PRESETS).flat().find(p => p.id === r.presetId);
+        if (matched) {
+          r.presetId = matched.id;
+          r.presetName = matched[state.lang] || matched.hi;
+        } else {
+          r.presetId = r.presetId || list[list.length - 1].id;
+          r.presetName = r.presetName || list[list.length - 1][state.lang];
         }
-    };
+      }
 
-    const categoryLabels = {
-        material: { en: "Material", hi: "सामग्री (Material)" },
-        contractor: { en: "Contractor", hi: "ठेकेदार (Contractor)" },
-        transport: { en: "Transport/Freight", hi: "भाड़ा/परिवहन (Transport)" },
-        electricity: { en: "Electricity", hi: "इलेक्ट्रिक (Electricity)" },
-        plumber: { en: "Plumbing", hi: "प्लंबर (Plumbing)" },
-        furniture: { en: "Furniture", hi: "फर्नीचर (Furniture)" },
-        putai: { en: "Paint/Putai", hi: "पुताई/पेंट (Putai)" },
-        other: { en: "Other", hi: "अन्य (Other)" }
-    };
+      r.id = r.id || (Date.now() + Math.floor(Math.random() * 1000));
+      r.type = ['buy', 'return', 'labour'].includes(r.type) ? r.type : 'buy';
+      r.quantity = Number(r.quantity) || 0;
+      r.rate = Number(r.rate) || 0;
+      r.total = (r.total !== undefined && r.total !== null && r.total !== '' && !Number.isNaN(Number(r.total)))
+        ? Number(r.total)
+        : (r.type === 'labour' ? r.rate : r.quantity * r.rate);
+      r.date = r.date || todayISO();
+      r.details = r.details || '';
+      r.remarks = r.remarks || '';
+      r.paymentMode = r.paymentMode || 'Cash';
+      return r;
+    }
 
-    window.onload = function() {
-        const dateInput = document.getElementById('entry-date');
-        if (dateInput) dateInput.valueAsDate = new Date();
-        loadLocalStorage();
-        updateLanguageUI();
-        handleCategoryChange();
-        handleTypeChange();
-        recalculateAll();
-    };
+    function loadState() {
+      const savedLang = readStore(STORAGE_KEY_LANG);
+      state.lang = (savedLang === 'en' || savedLang === 'hi') ? savedLang : 'en';
 
-    function loadLocalStorage() {
+      const rawEntries = readStore(STORAGE_KEY_ENTRIES) || readStore('gharnirman_entries_v4') || readStore('gharnirman_entries_v3');
+      if (rawEntries) {
         try {
-            const storedEntries = localStorage.getItem('gharnirman_entries_v4');
-            const storedContracts = localStorage.getItem('gharnirman_contracts_v4');
-            if (storedEntries) {
-                const parsed = JSON.parse(storedEntries);
-                entries = Array.isArray(parsed) ? parsed.map(normalizeEntry) : [];
-            }
-            if (storedContracts) {
-                contracts = JSON.parse(storedContracts) || {};
-            }
-        } catch (e) {
-            console.error("Failed to load local storage:", e);
+          const arr = JSON.parse(rawEntries);
+          if (Array.isArray(arr)) {
+            state.entries = arr.map(normalizeRecord);
+          }
+        } catch (_) {
+          state.entries = [];
         }
-    }
+      }
 
-    // Normalize an entry strictly preserving user-entered Item Details / Specification (`details`) and `presetId`
-    function normalizeEntry(raw) {
-        const entry = Object.assign({}, raw);
-        // Normalize category key if stored as label
-        if (entry.category && !subCategoryData[entry.category]) {
-            const catLower = String(entry.category).toLowerCase();
-            if (catLower.includes('material') || catLower.includes('सामग्री')) entry.category = 'material';
-            else if (catLower.includes('contract') || catLower.includes('ठेकेदार')) entry.category = 'contractor';
-            else if (catLower.includes('transport') || catLower.includes('भाड़ा')) entry.category = 'transport';
-            else if (catLower.includes('electr') || catLower.includes('इलेक्ट्रिक')) entry.category = 'electricity';
-            else if (catLower.includes('plumb') || catLower.includes('प्लंबर')) entry.category = 'plumber';
-            else if (catLower.includes('furnit') || catLower.includes('फर्नीचर')) entry.category = 'furniture';
-            else if (catLower.includes('putai') || catLower.includes('paint') || catLower.includes('पुताई')) entry.category = 'putai';
-            else entry.category = 'other';
+      const rawContracts = readStore(STORAGE_KEY_CONTRACTS) || readStore('gharnirman_contracts_v4') || readStore('gharnirman_contracts_v3');
+      if (rawContracts) {
+        try {
+          const obj = JSON.parse(rawContracts);
+          if (obj && typeof obj === 'object') state.contracts = obj;
+        } catch (_) {
+          state.contracts = {};
         }
+      }
+    }
 
-        if (entry.type !== 'labour') {
-            const resolvedPresetId = resolveEntryPresetId(entry);
-            entry.presetId = resolvedPresetId;
-            if (!entry.presetName) {
-                entry.presetName = getCanonicalPresetName(entry.category, resolvedPresetId, entry.preset || entry.subCategory || '');
-            }
-            // Keep user's exact specification/brand (e.g., "ACC Cement", "Ultratech Cement") untouched!
-            if (typeof entry.details === 'string') {
-                entry.details = entry.details;
-            } else if (typeof entry.itemName === 'string') {
-                entry.details = entry.itemName;
-            } else {
-                entry.details = '';
-            }
+    function persistState() {
+      const okE = writeStore(STORAGE_KEY_ENTRIES, JSON.stringify(state.entries));
+      const okC = writeStore(STORAGE_KEY_CONTRACTS, JSON.stringify(state.contracts));
+      const okL = writeStore(STORAGE_KEY_LANG, state.lang);
+      return okE && okC && okL;
+    }
+
+    function toggleLang() {
+      state.lang = state.lang === 'hi' ? 'en' : 'hi';
+      persistState();
+      applyLang();
+      populatePresetSelect();
+      refreshPresetFilters();
+      renderAll();
+    }
+
+    function applyLang() {
+      const hi = state.lang === 'hi';
+      document.getElementById('ui-title').textContent = hi ? 'ड्रीम होम खाता' : 'Dream Home Ledger';
+      document.getElementById('ui-subtitle').textContent = hi
+        ? 'नया क्लीन इंटरफ़ेस • खरीद, वापसी, भाड़ा व ठेका हिसाब'
+        : 'Fresh Clean Interface • Buy, Return, Freight & Contracts';
+      document.getElementById('ui-lang-btn').textContent = hi ? 'EN' : 'हिंदी';
+      document.getElementById('ui-form-title').textContent = hi ? 'नई एंट्री दर्ज करें' : 'New Entry';
+      document.getElementById('ui-form-sub').textContent = hi ? 'खरीद, वापसी या ठेकेदार भुगतान जोड़ें' : 'Record purchases, returns or labour payments';
+      document.getElementById('ui-save-btn').textContent = document.getElementById('edit-id').value
+        ? (hi ? 'अपडेट करें' : 'Update Entry')
+        : (hi ? 'एंट्री सेव करें' : 'Save Entry');
+      document.getElementById('ui-contract-title').textContent = hi ? 'ठेका एवं बकाया (Contracts)' : 'Contracts & Balance';
+      document.getElementById('ui-sum-title').textContent = hi ? 'श्रेणी व सामग्री हिसाब (Summary)' : 'Category & Item Summary';
+      document.getElementById('ui-ledger-title').textContent = hi ? 'लेन-देन खाता (Ledger)' : 'Transaction Ledger';
+      document.getElementById('ui-ledger-sub').textContent = hi ? 'सभी नई और पुरानी एंट्रियां यहाँ दिखती हैं' : 'All recorded transactions in one place';
+      const rst = document.getElementById('ui-reset-btn');
+      if (rst) rst.textContent = hi ? 'पूरा डेटा रीसेट करें' : 'Reset All Data';
+      syncVisibilityToggles();
+    }
+
+    function selectType(type) {
+      document.getElementById('f-type').value = type;
+      ['buy', 'return', 'labour'].forEach(t => {
+        const btn = document.getElementById('seg-' + t);
+        btn.className = 'seg-btn' + (t === type ? ' active-' + t : '');
+      });
+      onTypeChanged();
+    }
+
+    function syncCategoryOptionsForType(type) {
+      const catSel = document.getElementById('f-category');
+      const prevVal = catSel.value;
+      const allCats = [
+        { val: 'material', text: 'सामग्री (Material)' },
+        { val: 'contractor', text: 'ठेकेदार (Contractor)' },
+        { val: 'transport', text: 'भाड़ा (Transport)' },
+        { val: 'electricity', text: 'बिजली (Electricity)' },
+        { val: 'plumber', text: 'प्लंबर (Plumber)' },
+        { val: 'furniture', text: 'फर्नीचर (Furniture)' },
+        { val: 'putai', text: 'पुताई / पेंट (Putai)' },
+        { val: 'other', text: 'अन्य (Other)' }
+      ];
+      const filtered = allCats.filter(c => {
+        if (type === 'buy' && c.val === 'contractor') return false;
+        if (type === 'labour' && c.val === 'transport') return false;
+        return true;
+      });
+      catSel.innerHTML = filtered.map(c => `<option value="${c.val}">${c.text}</option>`).join('');
+      if (filtered.some(c => c.val === prevVal)) {
+        catSel.value = prevVal;
+      } else {
+        catSel.value = filtered[0]?.val || 'material';
+      }
+    }
+
+    function syncTransportInputs() {
+      const type = document.getElementById('f-type').value;
+      const cat = document.getElementById('f-category').value;
+      const isTransportEntry = type !== 'labour' && cat === 'transport';
+
+      document.getElementById('unit-field')?.classList.toggle('hidden', isTransportEntry);
+      document.getElementById('qty-field')?.classList.toggle('hidden', isTransportEntry);
+      document.getElementById('rate-field')?.classList.toggle('hidden', isTransportEntry);
+      document.getElementById('qty-rate-grid')?.classList.toggle('hidden', isTransportEntry);
+      document.getElementById('transport-amt-field')?.classList.toggle('hidden', !isTransportEntry);
+    }
+
+    function onTypeChanged() {
+      const type = document.getElementById('f-type').value;
+      const isLab = type === 'labour';
+      syncCategoryOptionsForType(type);
+      populatePresetSelect();
+      document.getElementById('goods-fields').classList.toggle('hidden', isLab);
+      document.getElementById('preset-field').classList.toggle('hidden', isLab);
+      document.getElementById('labour-fields').classList.toggle('hidden', !isLab);
+      syncTransportInputs();
+      onPresetChanged();
+    }
+
+    function onCategoryChanged() {
+      syncTransportInputs();
+      populatePresetSelect();
+      onPresetChanged();
+    }
+
+    function populatePresetSelect() {
+      const cat = document.getElementById('f-category').value;
+      const sel = document.getElementById('f-preset');
+      const items = PRESETS[cat] || PRESETS.other;
+      sel.innerHTML = '';
+      items.forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item.id;
+        opt.textContent = item[state.lang] || item.hi;
+        opt.dataset.unit = item.unit;
+        sel.appendChild(opt);
+      });
+    }
+
+    function onPresetChanged() {
+      const sel = document.getElementById('f-preset');
+      const opt = sel.options[sel.selectedIndex];
+      if (opt && opt.dataset.unit) {
+        const unitSel = document.getElementById('f-unit');
+        if ([...unitSel.options].some(o => o.value === opt.dataset.unit)) {
+          unitSel.value = opt.dataset.unit;
         }
-        return entry;
+      }
+      calcPreview();
     }
 
-    function saveToLocalStorage() {
-        localStorage.setItem('gharnirman_entries_v4', JSON.stringify(entries));
-        localStorage.setItem('gharnirman_contracts_v4', JSON.stringify(contracts));
+    function calcPreview() {
+      const type = document.getElementById('f-type').value;
+      const cat = document.getElementById('f-category').value;
+      let total = 0;
+      if (type === 'labour') {
+        total = Math.max(0, Number(document.getElementById('f-labour-amt').value) || 0);
+      } else if (cat === 'transport') {
+        total = Math.max(0, Number(document.getElementById('f-transport-amt').value) || 0);
+      } else {
+        const q = Math.max(0, Number(document.getElementById('f-qty').value) || 0);
+        const r = Math.max(0, Number(document.getElementById('f-rate').value) || 0);
+        total = q * r;
+      }
+      document.getElementById('f-total-preview').textContent = '₹' + total.toLocaleString('en-IN', { maximumFractionDigits: 2 });
+      return total;
     }
 
-    function toggleLanguage() {
-        currentLang = currentLang === 'hi' ? 'en' : 'hi';
-        updateLanguageUI();
-        handleCategoryChange();
-        renderTable();
-        renderContracts();
-        renderAggregatedSummary();
-    }
+    function submitEntry(ev) {
+      ev.preventDefault();
+      const editId = document.getElementById('edit-id').value;
+      const type = document.getElementById('f-type').value;
+      const category = document.getElementById('f-category').value;
+      const date = document.getElementById('f-date').value || todayISO();
+      const paymentMode = document.getElementById('f-mode').value;
+      const remarks = document.getElementById('f-remarks').value.trim();
 
-    function updateLanguageUI() {
-        const langData = i18n[currentLang];
-        const titleEl = document.getElementById('app-title');
-        const subTitleEl = document.getElementById('app-subtitle');
-        const langBtnTextEl = document.getElementById('lang-btn-text');
-        const exportBtnEl = document.getElementById('btn-export');
-
-        if (titleEl) titleEl.innerText = langData.app_title;
-        if (subTitleEl) subTitleEl.innerText = langData.app_subtitle;
-        if (langBtnTextEl) langBtnTextEl.innerText = langData.lang_btn;
-        if (exportBtnEl && exportBtnEl.querySelector('span')) {
-            exportBtnEl.querySelector('span').innerText = langData.btn_export;
+      let record;
+      if (type === 'labour') {
+        const contractor = document.getElementById('f-contractor').value.trim() || (CAT_NAMES[category]?.[state.lang] || category);
+        const amt = Math.max(0, Number(document.getElementById('f-labour-amt').value) || 0);
+        if (amt <= 0) {
+          showToast(state.lang === 'hi' ? 'राशि 0 होने पर एंट्री सेव नहीं होगी' : 'Cannot save entry when amount is 0');
+          return;
         }
-
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (langData[key]) {
-                el.innerText = langData[key];
-            }
-        });
-        handleUnitChange();
-    }
-
-    function handleCategoryChange() {
-        const catSelect = document.getElementById('category-select');
-        if (!catSelect) return;
-        const cat = catSelect.value;
-        const subSelect = document.getElementById('predefined-item-select');
-        if (!subSelect) return;
-        subSelect.innerHTML = '';
-
-        const items = subCategoryData[cat] || subCategoryData['other'];
-        items.forEach(item => {
-            const opt = document.createElement('option');
-            opt.value = item.id;
-            opt.innerText = item[currentLang] || item.en;
-            opt.setAttribute('data-unit', item.defaultUnit);
-            opt.setAttribute('data-name', item[currentLang] || item.en);
-            subSelect.appendChild(opt);
-        });
-
-        handlePredefinedItemSelect();
-    }
-
-    function handlePredefinedItemSelect() {
-        const subSelect = document.getElementById('predefined-item-select');
-        if (!subSelect) return;
-        const selectedOpt = subSelect.options[subSelect.selectedIndex];
-        if (!selectedOpt) return;
-
-        const unit = selectedOpt.getAttribute('data-unit');
-        const unitSelect = document.getElementById('unit-select');
-        if (unit && unitSelect) {
-            unitSelect.value = unit;
-        }
-        handleUnitChange();
-    }
-
-    function handleUnitChange() {
-        const unitSelect = document.getElementById('unit-select');
-        if (!unitSelect) return;
-        const unit = unitSelect.value;
-        const qtyLabel = document.getElementById('lbl-quantity-title');
-        const rateLabel = document.getElementById('lbl-rate-title');
-
-        if (unit === 'Ton') {
-            if (currentLang === 'hi') {
-                qtyLabel.innerText = "मात्रा (Ton में)";
-                rateLabel.innerText = "दर प्रति Ton (₹)";
-            } else {
-                qtyLabel.innerText = "Quantity (Tons)";
-                rateLabel.innerText = "Rate per Ton (₹)";
-            }
-        } else if (unit === 'Kg') {
-            if (currentLang === 'hi') {
-                qtyLabel.innerText = "मात्रा (Kg में)";
-                rateLabel.innerText = "दर प्रति Kg (₹)";
-            } else {
-                qtyLabel.innerText = "Quantity (Kg)";
-                rateLabel.innerText = "Rate per Kg (₹)";
-            }
-        } else if (unit === 'Quintal') {
-            if (currentLang === 'hi') {
-                qtyLabel.innerText = "मात्रा (क्विंटल में)";
-                rateLabel.innerText = "दर प्रति Quintal (₹)";
-            } else {
-                qtyLabel.innerText = "Quantity (Quintals)";
-                rateLabel.innerText = "Rate per Quintal (₹)";
-            }
-        } else if (unit === 'Brass') {
-            if (currentLang === 'hi') {
-                qtyLabel.innerText = "मात्रा (Brass में)";
-                rateLabel.innerText = "दर प्रति Brass (₹)";
-            } else {
-                qtyLabel.innerText = "Quantity (Brass)";
-                rateLabel.innerText = "Rate per Brass (₹)";
-            }
-        } else if (unit === 'Cu.Ft') {
-            if (currentLang === 'hi') {
-                qtyLabel.innerText = "मात्रा (Cu.Ft घन फीट में)";
-                rateLabel.innerText = "दर प्रति Cu.Ft (₹)";
-            } else {
-                qtyLabel.innerText = "Quantity (Cu.Ft)";
-                rateLabel.innerText = "Rate per Cu.Ft (₹)";
-            }
-        } else if (unit === 'Truck / Trolley') {
-            if (currentLang === 'hi') {
-                qtyLabel.innerText = "मात्रा (ट्रक/ट्रॉली संख्या)";
-                rateLabel.innerText = "दर प्रति गाडी/ट्रिप (₹)";
-            } else {
-                qtyLabel.innerText = "Quantity (Truck/Trolley Trips)";
-                rateLabel.innerText = "Rate per Trip (₹)";
-            }
-        } else {
-            if (currentLang === 'hi') {
-                qtyLabel.innerText = "मात्रा (Quantity)";
-                rateLabel.innerText = "दर प्रति इकाई (Rate per Unit ₹)";
-            } else {
-                qtyLabel.innerText = "Quantity";
-                rateLabel.innerText = "Rate per Unit (₹)";
-            }
-        }
-        calculateTotal();
-    }
-
-    function handleTypeChange() {
-        const typeSelect = document.getElementById('type-select');
-        if (!typeSelect) return;
-        const type = typeSelect.value;
-        const secMaterial = document.getElementById('section-material');
-        const secLabour = document.getElementById('section-labour');
-
-        if (type === 'labour') {
-            if (secMaterial) secMaterial.classList.add('hidden');
-            if (secLabour) secLabour.classList.remove('hidden');
-        } else {
-            if (secMaterial) secMaterial.classList.remove('hidden');
-            if (secLabour) secLabour.classList.add('hidden');
-        }
-        calculateTotal();
-    }
-
-    // Universal Unit Calculation Logic (No guesswork, exact Qty * Rate)
-    function getConvertedQuantityAndTotal(rawQty, rate, unit) {
-        let calcQty = rawQty;
-        let total = 0;
-
-        if (unit === 'Brass') {
-            // 1 Brass = 100 Cu.Ft (optional internal calc if needed, but total = rawQty * rate)
-            calcQty = rawQty; 
-            total = rawQty * rate;
-        } else if (unit === 'Quintal') {
-            // 1 Quintal = 100 Kg
-            calcQty = rawQty;
-            total = rawQty * rate;
-        } else {
-            total = rawQty * rate;
-        }
-
-        return { calcQty, total };
-    }
-
-    function calculateTotal() {
-        const typeSelect = document.getElementById('type-select');
-        if (!typeSelect) return 0;
-        const type = typeSelect.value;
-        let total = 0;
-
-        if (type === 'labour') {
-            const amt = parseFloat(document.getElementById('labour-payment-amount').value) || 0;
-            total = amt;
-        } else {
-            const rawQty = parseFloat(document.getElementById('quantity').value) || 0;
-            const rate = parseFloat(document.getElementById('rate').value) || 0;
-            const unit = document.getElementById('unit-select').value;
-
-            const res = getConvertedQuantityAndTotal(rawQty, rate, unit);
-            total = res.total;
-        }
-
-        const compTotalEl = document.getElementById('computed-total');
-        if (compTotalEl) {
-            compTotalEl.innerText = '₹' + total.toLocaleString('en-IN', { maximumFractionDigits: 2 });
-        }
-        return total;
-    }
-
-    function handleFormSubmit(event) {
-        event.preventDefault();
-
-        const entryId = document.getElementById('entry-id').value;
-        const type = document.getElementById('type-select').value;
-        const category = document.getElementById('category-select').value;
-        const date = document.getElementById('entry-date').value;
-        const paymentMode = document.getElementById('payment-mode').value;
-        const remarks = document.getElementById('remarks').value;
-
-        let entryData = {
-            id: entryId ? parseInt(entryId) : Date.now(),
-            type: type,
-            category: category,
-            date: date,
-            paymentMode: paymentMode,
-            remarks: remarks,
-            timestamp: new Date().getTime()
+        record = {
+          id: editId ? (Number.isNaN(Number(editId)) ? editId : Number(editId)) : Date.now(),
+          type: 'labour',
+          category,
+          presetId: 'labour_work',
+          presetName: contractor,
+          details: contractor,
+          unit: 'Task',
+          quantity: 1,
+          rate: amt,
+          total: amt,
+          date,
+          paymentMode,
+          remarks
         };
-
-        if (type === 'labour') {
-            const contractorName = document.getElementById('contractor-name').value.trim() || (categoryLabels[category] ? categoryLabels[category][currentLang] : category);
-            const paymentAmount = parseFloat(document.getElementById('labour-payment-amount').value) || 0;
-            
-            entryData.presetId = 'labour_work';
-            entryData.presetName = contractorName;
-            entryData.details = contractorName;
-            entryData.quantity = 1;
-            entryData.rate = paymentAmount;
-            entryData.unit = 'Task';
-            entryData.freight = 0;
-            entryData.total = paymentAmount;
-        } else {
-            const presetSelectEl = document.getElementById('predefined-item-select');
-            const predefinedOpt = presetSelectEl && presetSelectEl.selectedIndex >= 0 ? presetSelectEl.options[presetSelectEl.selectedIndex] : null;
-            const presetId = (presetSelectEl && presetSelectEl.value) ? presetSelectEl.value : (predefinedOpt ? predefinedOpt.value : 'other_mat');
-            const presetName = predefinedOpt ? predefinedOpt.text : getCanonicalPresetName(category, presetId, 'Item');
-            // Store user's custom specification separately from presetName so it is never overwritten or lost
-            const itemName = document.getElementById('item-name').value.trim();
-            const unit = document.getElementById('unit-select').value;
-            const rawQty = parseFloat(document.getElementById('quantity').value) || 0;
-            const rate = parseFloat(document.getElementById('rate').value) || 0;
-            
-            const conv = getConvertedQuantityAndTotal(rawQty, rate, unit);
-
-            entryData.presetId = presetId;
-            entryData.presetName = presetName;
-            entryData.details = itemName; // Strictly preserve exact user specification (e.g., "ACC", "Ultratech", etc.)
-            entryData.unit = unit;
-            entryData.quantity = rawQty; 
-            entryData.internalQty = conv.calcQty; 
-            entryData.rate = rate;
-            entryData.freight = 0;
-            entryData.total = conv.total;
+      } else if (category === 'transport') {
+        const pSel = document.getElementById('f-preset');
+        const presetId = pSel.value;
+        const presetName = pSel.options[pSel.selectedIndex]?.textContent || presetId;
+        const details = document.getElementById('f-details').value.trim();
+        const amt = Math.max(0, Number(document.getElementById('f-transport-amt').value) || 0);
+        if (amt <= 0) {
+          showToast(state.lang === 'hi' ? 'राशि 0 होने पर एंट्री सेव नहीं होगी' : 'Cannot save entry when amount is 0');
+          return;
+        }
+        record = {
+          id: editId ? (Number.isNaN(Number(editId)) ? editId : Number(editId)) : Date.now(),
+          type,
+          category,
+          presetId,
+          presetName,
+          details,
+          unit: '',
+          quantity: 0,
+          rate: amt,
+          total: amt,
+          date,
+          paymentMode,
+          remarks
+        };
+      } else {
+        const pSel = document.getElementById('f-preset');
+        const presetId = pSel.value;
+        const presetName = pSel.options[pSel.selectedIndex]?.textContent || presetId;
+        const details = document.getElementById('f-details').value.trim();
+        const unit = document.getElementById('f-unit').value;
+        const quantity = Math.max(0, Number(document.getElementById('f-qty').value) || 0);
+        const rate = Math.max(0, Number(document.getElementById('f-rate').value) || 0);
+        const total = quantity * rate;
+        if (quantity <= 0 || rate <= 0 || total <= 0) {
+          showToast(state.lang === 'hi' ? 'Quantity, Rate और Total 0 से अधिक होना चाहिए' : 'Quantity, rate and total must be greater than 0');
+          return;
         }
 
-        if (entryId) {
-            const index = entries.findIndex(e => e.id === parseInt(entryId));
-            if (index !== -1) entries[index] = entryData;
-        } else {
-            entries.unshift(entryData);
+        // Do not allow returning more quantity than the remaining purchased quantity.
+        if (type === 'return') {
+          const keyId = canonicalPresetId({ category, presetId, presetName, details });
+          const purchasedQty = state.entries.reduce((sum, e) => {
+            if (e.type !== 'buy' || e.category !== category || canonicalPresetId(e) !== keyId || (e.unit || '') !== (unit || '')) return sum;
+            return sum + (Number(e.quantity) || 0);
+          }, 0);
+          const alreadyReturnedQty = state.entries.reduce((sum, e) => {
+            if (e.type !== 'return' || e.category !== category || canonicalPresetId(e) !== keyId || (e.unit || '') !== (unit || '')) return sum;
+            if (editId && String(e.id) === String(editId)) return sum;
+            return sum + (Number(e.quantity) || 0);
+          }, 0);
+          const remainingQty = Math.max(0, purchasedQty - alreadyReturnedQty);
+          if (quantity > remainingQty + 0.000001) {
+            showToast(state.lang === 'hi'
+              ? `वापसी की मात्रा अधिक है। उपलब्ध मात्रा: ${remainingQty} ${unit}`
+              : `Return quantity is too high. Available quantity: ${remainingQty} ${unit}`);
+            return;
+          }
         }
 
-        saveToLocalStorage();
-        resetForm();
-        recalculateAll();
+        record = {
+          id: editId ? (Number.isNaN(Number(editId)) ? editId : Number(editId)) : Date.now(),
+          type,
+          category,
+          presetId,
+          presetName,
+          details,
+          unit,
+          quantity,
+          rate,
+          total,
+          date,
+          paymentMode,
+          remarks
+        };
+      }
+
+      const wasEdit = Boolean(editId);
+      if (editId) {
+        const idx = state.entries.findIndex(e => String(e.id) === String(editId));
+        if (idx !== -1) {
+          const existing = state.entries[idx];
+          record = Object.assign({}, existing, record, { id: existing.id });
+          state.entries[idx] = record;
+        } else {
+          record.id = editId;
+        }
+      } else {
+        state.entries.unshift(record);
+      }
+
+      if (!persistState()) return;
+      showToast(wasEdit
+        ? (state.lang === 'hi' ? 'एंट्री अपडेट हो गई!' : 'Entry updated!')
+        : (state.lang === 'hi' ? 'नई एंट्री सेव हो गई!' : 'New entry saved!'));
+      resetForm();
+      renderAll();
     }
 
     function resetForm() {
-        document.getElementById('entry-form').reset();
-        document.getElementById('entry-id').value = '';
-        document.getElementById('entry-date').valueAsDate = new Date();
-        document.getElementById('btn-cancel').classList.add('hidden');
-        document.getElementById('form-mode-badge').innerText = 'New Entry';
-        document.getElementById('form-mode-badge').className = 'px-2.5 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-600';
-        document.getElementById('btn-submit').querySelector('span').innerText = i18n[currentLang].btn_save_entry;
-        handleCategoryChange();
-        handleTypeChange();
+      document.getElementById('ledger-form').reset();
+      document.getElementById('edit-id').value = '';
+      document.getElementById('f-date').value = todayISO();
+      document.getElementById('btn-cancel-edit').classList.add('hidden');
+      document.getElementById('form-mode-badge').textContent = 'NEW';
+      document.getElementById('ui-save-btn').textContent = state.lang === 'hi' ? 'एंट्री सेव करें' : 'Save Entry';
+      onCategoryChanged();
+      selectType('buy');
     }
 
-    function editEntry(id) {
-        const entry = entries.find(e => e.id === id);
-        if (!entry) return;
+    function editRecord(id) {
+      const rec = state.entries.find(e => String(e.id) === String(id));
+      if (!rec) return;
 
-        document.getElementById('entry-id').value = entry.id;
-        document.getElementById('type-select').value = entry.type;
-        document.getElementById('category-select').value = entry.category;
-        handleCategoryChange();
-        
-        const resolvedEditPresetId = resolveEntryPresetId(entry);
-        const presetDropdown = document.getElementById('predefined-item-select');
-        if (resolvedEditPresetId && Array.from(presetDropdown.options).some(o => o.value === resolvedEditPresetId)) {
-            presetDropdown.value = resolvedEditPresetId;
+      mobileView('add');
+      document.getElementById('edit-id').value = rec.id;
+      selectType(rec.type);
+      const catSel = document.getElementById('f-category');
+      if ([...catSel.options].some(o => o.value === rec.category)) {
+        catSel.value = rec.category;
+      }
+      onCategoryChanged();
+
+      if (rec.type === 'labour') {
+        document.getElementById('f-contractor').value = rec.details || rec.presetName || '';
+        document.getElementById('f-labour-amt').value = rec.total || 0;
+      } else if (rec.category === 'transport') {
+        const pSel = document.getElementById('f-preset');
+        if ([...pSel.options].some(o => o.value === rec.presetId)) {
+          pSel.value = rec.presetId;
         }
-        
-        handleTypeChange();
-        
-        document.getElementById('entry-date').value = entry.date;
-        document.getElementById('payment-mode').value = entry.paymentMode || 'Cash';
-        document.getElementById('remarks').value = entry.remarks || '';
-
-        if (entry.type === 'labour') {
-            document.getElementById('contractor-name').value = entry.details || entry.presetName || '';
-            document.getElementById('labour-payment-amount').value = entry.total;
-        } else {
-            // Restore exact Item Details / Specification (avoid duplicating presetName if details was empty)
-            const specText = (entry.details && entry.details !== entry.presetName) ? entry.details : (entry.details || '');
-            document.getElementById('item-name').value = specText;
-            document.getElementById('unit-select').value = entry.unit || 'Bags';
-            handleUnitChange();
-            document.getElementById('quantity').value = entry.quantity;
-            document.getElementById('rate').value = entry.rate;
+        document.getElementById('f-details').value = rec.details || '';
+        document.getElementById('f-transport-amt').value = rec.total || rec.rate || 0;
+      } else {
+        const pSel = document.getElementById('f-preset');
+        if ([...pSel.options].some(o => o.value === rec.presetId)) {
+          pSel.value = rec.presetId;
         }
-
-        calculateTotal();
-
-        document.getElementById('btn-cancel').classList.remove('hidden');
-        document.getElementById('form-mode-badge').innerText = 'Editing Entry';
-        document.getElementById('form-mode-badge').className = 'px-2.5 py-1 text-xs font-semibold rounded-full bg-amber-100 text-amber-800';
-        document.getElementById('btn-submit').querySelector('span').innerText = 'Update Entry (अपडेट करें)';
-        
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    let pendingDeleteId = null;
-    function deleteEntry(id) {
-        pendingDeleteId = id;
-        document.getElementById('modal-title').innerText = currentLang === 'hi' ? 'एंट्री डिलीट करें?' : 'Delete Entry?';
-        document.getElementById('modal-text').innerText = currentLang === 'hi' ? 'क्या आप इस लेन-देन की एंट्री को हटाना चाहते हैं?' : 'Are you sure you want to delete this transaction record?';
-        document.getElementById('modal-btn-confirm').onclick = executeDelete;
-        document.getElementById('modal-container').classList.remove('hidden');
-    }
-
-    function executeDelete() {
-        if (pendingDeleteId) {
-            entries = entries.filter(e => e.id !== pendingDeleteId);
-            saveToLocalStorage();
-            recalculateAll();
-            closeModal();
-            pendingDeleteId = null;
+        document.getElementById('f-details').value = rec.details || '';
+        const uSel = document.getElementById('f-unit');
+        if (rec.unit && [...uSel.options].some(o => o.value === rec.unit)) {
+          uSel.value = rec.unit;
         }
+        document.getElementById('f-qty').value = rec.quantity || 0;
+        document.getElementById('f-rate').value = rec.rate || 0;
+      }
+
+      document.getElementById('f-date').value = rec.date || todayISO();
+      document.getElementById('f-mode').value = rec.paymentMode || 'Cash';
+      document.getElementById('f-remarks').value = rec.remarks || '';
+      document.getElementById('btn-cancel-edit').classList.remove('hidden');
+      document.getElementById('form-mode-badge').textContent = 'EDIT';
+      document.getElementById('ui-save-btn').textContent = state.lang === 'hi' ? 'अपडेट करें' : 'Update Entry';
+      calcPreview();
+      document.getElementById('sec-form').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function confirmResetAll() {
-        document.getElementById('modal-title').innerText = currentLang === 'hi' ? 'पूरा डाटा रिसेट करें?' : 'Reset All Data?';
-        document.getElementById('modal-text').innerText = currentLang === 'hi' ? 'चेतावनी: यह क्रिया आपकी सभी सेव की गई एंट्रियाँ और ठेका राशि मिटा देगी!' : 'Warning: This will clear all recorded entries and saved contractor balances!';
-        document.getElementById('modal-btn-confirm').onclick = () => {
-            entries = [];
-            contracts = {};
-            saveToLocalStorage();
-            recalculateAll();
-            closeModal();
-        };
-        document.getElementById('modal-container').classList.remove('hidden');
+    function deleteRecord(id) {
+      const target = state.entries.find(e => String(e.id) === String(id));
+      const label = target ? (target.presetName || target.details || String(id)) : String(id);
+      const msg = state.lang === 'hi'
+        ? `क्या आप वाकई यह एंट्री हटाना चाहते हैं?
+"${label}"`
+        : `Are you sure you want to delete this entry?
+"${label}"`;
+      if (!window.confirm(msg)) {
+        showToast(state.lang === 'hi' ? 'हटाना रद्द किया गया' : 'Delete cancelled');
+        return;
+      }
+      state.entries = state.entries.filter(e => String(e.id) !== String(id));
+      if (!persistState()) return;
+      renderAll();
+      showToast(state.lang === 'hi' ? 'एंट्री हटा दी गई' : 'Entry deleted');
     }
 
-    function closeModal() {
-        document.getElementById('modal-container').classList.add('hidden');
+    function saveContract(ev) {
+      ev.preventDefault();
+      const cat = document.getElementById('c-category').value;
+      const amt = Math.max(0, Number(document.getElementById('c-amount').value) || 0);
+      const act = document.getElementById('c-action').value;
+      if (act === 'add') {
+        state.contracts[cat] = (Number(state.contracts[cat]) || 0) + amt;
+      } else {
+        state.contracts[cat] = amt;
+      }
+      document.getElementById('c-amount').value = '';
+      if (!persistState()) return;
+      renderAll();
+      showToast(state.lang === 'hi' ? 'ठेका राशि सेव हुई' : 'Contract saved');
     }
 
-    function handleContractSetup(e) {
-        e.preventDefault();
-        const cat = document.getElementById('contract-category').value;
-        const amt = parseFloat(document.getElementById('contract-total-amount').value) || 0;
-        const actionType = document.getElementById('contract-action-type').value;
+    function toggleSummaryEntries() {
+      state.showSummary = !state.showSummary;
+      syncVisibilityToggles();
+      if (state.showSummary) renderSummary();
+    }
 
-        if (actionType === 'add') {
-            contracts[cat] = (contracts[cat] || 0) + amt;
-        } else {
-            contracts[cat] = amt;
+    function toggleLedgerEntries() {
+      state.showLedger = !state.showLedger;
+      syncVisibilityToggles();
+      if (state.showLedger) renderLedger();
+    }
+
+    function syncVisibilityToggles() {
+      const sumWrap = document.getElementById('summary-body-wrap');
+      const ledWrap = document.getElementById('ledger-body-wrap');
+      if (sumWrap) sumWrap.classList.toggle('hidden', !state.showSummary);
+      if (ledWrap) ledWrap.classList.toggle('hidden', !state.showLedger);
+
+      const hi = state.lang === 'hi';
+      const sumLbl = document.getElementById('ui-sum-toggle-txt');
+      const ledLbl = document.getElementById('ui-ledger-toggle-txt');
+      if (sumLbl) {
+        sumLbl.textContent = state.showSummary
+          ? (hi ? 'एंट्री छुपाएं (Hide)' : 'Hide Entries')
+          : (hi ? 'एंट्री देखें (Show)' : 'Show Entries');
+      }
+      if (ledLbl) {
+        ledLbl.textContent = state.showLedger
+          ? (hi ? 'एंट्री छुपाएं (Hide)' : 'Hide Entries')
+          : (hi ? 'एंट्री देखें (Show)' : 'Show Entries');
+      }
+    }
+
+    function renderAll() {
+      renderKPIs();
+      renderContracts();
+      refreshPresetFilters();
+      syncVisibilityToggles();
+      renderSummary();
+      renderLedger();
+    }
+
+    function renderKPIs() {
+      let buySum = 0;
+      let retSum = 0;
+      let labourPaid = 0;
+      let transportBuy = 0;
+      let transportRet = 0;
+      const paidByCat = {};
+
+      state.entries.forEach(e => {
+        const amt = Number(e.total) || 0;
+        if (e.type === 'labour') {
+          labourPaid += amt;
+          const c = e.category || 'other';
+          paidByCat[c] = (paidByCat[c] || 0) + amt;
+        } else if (e.category === 'transport') {
+          if (e.type === 'return') transportRet += amt;
+          else transportBuy += amt;
+        } else if (e.type === 'buy') {
+          buySum += amt;
+        } else if (e.type === 'return') {
+          retSum += amt;
         }
+      });
 
-        saveToLocalStorage();
-        document.getElementById('contract-total-amount').value = '';
-        recalculateAll();
-    }
+      const transportSum = transportBuy - transportRet;
+      const netMat = buySum - retSum;
+      const totalSpent = netMat + labourPaid + transportSum;
+      const agreedTotal = Object.values(state.contracts).reduce((a, b) => a + (Number(b) || 0), 0);
+      const dueTotal = Object.keys(state.contracts).reduce((sum, cat) => {
+        const agreed = Number(state.contracts[cat]) || 0;
+        const paidCat = paidByCat[cat] || 0;
+        return sum + Math.max(0, agreed - paidCat);
+      }, 0);
 
-    function recalculateAll() {
-        let totalBuyCost = 0;
-        let totalReturnCost = 0;
-        let totalLabourPaid = 0;
-        let totalFreight = 0;
-
-        entries.forEach(e => {
-            if (e.category === 'transport') {
-                totalFreight += e.total;
-            } else if (e.type === 'buy') {
-                totalBuyCost += e.total;
-            } else if (e.type === 'return') {
-                totalReturnCost += e.total;
-            } else if (e.type === 'labour') {
-                totalLabourPaid += e.total;
-            }
-        });
-
-        const netMaterialCost = totalBuyCost - totalReturnCost;
-        const overallSpent = netMaterialCost + totalLabourPaid + totalFreight;
-
-        let totalContractAgreedSum = 0;
-        Object.values(contracts).forEach(val => {
-            totalContractAgreedSum += (parseFloat(val) || 0);
-        });
-        const remainingLabourBalance = Math.max(0, totalContractAgreedSum - totalLabourPaid);
-
-        document.getElementById('kpi-total-cost').innerText = '₹' + Math.round(overallSpent).toLocaleString('en-IN');
-        document.getElementById('kpi-material-cost').innerText = '₹' + Math.round(netMaterialCost).toLocaleString('en-IN');
-        document.getElementById('kpi-material-subtext').innerText = `Buy: ₹${Math.round(totalBuyCost).toLocaleString('en-IN')} | Return: -₹${Math.round(totalReturnCost).toLocaleString('en-IN')}`;
-        
-        document.getElementById('kpi-transport-cost').innerText = '₹' + Math.round(totalFreight).toLocaleString('en-IN');
-
-        document.getElementById('kpi-labour-paid').innerText = '₹' + Math.round(totalLabourPaid).toLocaleString('en-IN');
-        document.getElementById('kpi-labour-subtext').innerText = `Agreed Total: ₹${Math.round(totalContractAgreedSum).toLocaleString('en-IN')}`;
-
-        document.getElementById('kpi-labour-pending').innerText = '₹' + Math.round(remainingLabourBalance).toLocaleString('en-IN');
-
-        renderContracts();
-        renderAggregatedSummary();
-        renderTable();
-    }
-
-    // Grouping entries strictly by Select Item Preset (presetId + unit), NEVER by Item Details / Specification
-    function renderAggregatedSummary() {
-        const grid = document.getElementById('aggregated-items-grid');
-        const emptyState = document.getElementById('aggregated-empty-state');
-        if (!grid || !emptyState) return;
-        grid.innerHTML = '';
-
-        const summaryMap = {};
-
-        entries.forEach(e => {
-            if (e.type === 'labour') return;
-
-            // Strictly use Select Item Preset ID (e.g., "cement", "sariya", "sand") — ignore e.details!
-            const presetId = resolveEntryPresetId(e);
-            const unitKey = (e.unit || 'Other').trim().toLowerCase();
-            const groupKey = `${presetId}__${unitKey}`;
-            
-            // Display the canonical Preset label (e.g. "Cement (सीमेंट)") instead of specific brand name
-            const presetDisplayName = getCanonicalPresetName(e.category, presetId, e.presetName);
-
-            if (!summaryMap[groupKey]) {
-                summaryMap[groupKey] = {
-                    presetId: presetId,
-                    name: presetDisplayName,
-                    category: e.category,
-                    unit: e.unit || '',
-                    buyQty: 0,
-                    returnQty: 0,
-                    netQty: 0,
-                    buyCost: 0,
-                    returnCost: 0,
-                    netCost: 0,
-                    specs: new Set()
-                };
-            }
-
-            // Collect distinct Item Details / Specifications (e.g., ACC, Ultratech) for informative tag preview only
-            if (e.details && e.details.trim() && e.details.trim() !== presetDisplayName) {
-                summaryMap[groupKey].specs.add(e.details.trim());
-            }
-
-            if (e.type === 'buy') {
-                summaryMap[groupKey].buyQty += (parseFloat(e.quantity) || 0);
-                summaryMap[groupKey].buyCost += (parseFloat(e.total) || 0);
-            } else if (e.type === 'return') {
-                summaryMap[groupKey].returnQty += (parseFloat(e.quantity) || 0);
-                summaryMap[groupKey].returnCost += (parseFloat(e.total) || 0);
-            }
-        });
-
-        const keys = Object.keys(summaryMap);
-        if (keys.length === 0) {
-            emptyState.classList.remove('hidden');
-            return;
-        } else {
-            emptyState.classList.add('hidden');
-        }
-
-        keys.forEach(key => {
-            const item = summaryMap[key];
-            item.netQty = item.buyQty - item.returnQty;
-            item.netCost = item.buyCost - item.returnCost;
-
-            const catBadge = categoryLabels[item.category] ? categoryLabels[item.category][currentLang] : item.category;
-            const specsList = Array.from(item.specs);
-            const specsBadgeHtml = specsList.length > 0
-                ? `<div class="text-[11px] text-indigo-700 bg-indigo-50/80 border border-indigo-100 rounded-md px-2 py-1 mt-1 truncate" title="${specsList.join(', ')}">
-                     <span class="font-semibold">${currentLang === 'hi' ? 'विवरण:' : 'Specs:'}</span> ${specsList.join(', ')}
-                   </div>`
-                : '';
-
-            const itemCardHtml = `
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between hover:shadow-sm transition">
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-1">
-                            <h4 class="font-bold text-slate-900 text-sm truncate" title="${item.name}">${item.name}</h4>
-                            <span class="px-2 py-0.5 text-[10px] font-semibold rounded bg-indigo-100 text-indigo-700 uppercase shrink-0">${catBadge}</span>
-                        </div>
-                        ${specsBadgeHtml}
-                        
-                        <div class="space-y-1 my-3 text-xs">
-                            <div class="flex justify-between text-slate-600">
-                                <span>${currentLang === 'hi' ? 'कुल खरीदी (Bought):' : 'Total Bought:'}</span>
-                                <span class="font-medium text-slate-900">${item.buyQty} ${item.unit}</span>
-                            </div>
-                            ${item.returnQty > 0 ? `
-                            <div class="flex justify-between text-rose-600">
-                                <span>${currentLang === 'hi' ? 'वापसी (Returned):' : 'Total Returned:'}</span>
-                                <span class="font-medium">-${item.returnQty} ${item.unit}</span>
-                            </div>
-                            ` : ''}
-                            <div class="flex justify-between font-bold text-slate-900 pt-1 border-t border-slate-200">
-                                <span>${currentLang === 'hi' ? 'नेट मात्रा (Net Qty):' : 'Net Quantity:'}</span>
-                                <span class="text-blue-600">${item.netQty} ${item.unit}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-lg p-2.5 border border-slate-200 flex justify-between items-center mt-2">
-                        <span class="text-xs font-semibold text-slate-500">${currentLang === 'hi' ? 'कुल खर्च:' : 'Net Total Cost:'}</span>
-                        <span class="text-base font-extrabold text-emerald-700">₹${Math.round(item.netCost).toLocaleString('en-IN')}</span>
-                    </div>
-                </div>
-            `;
-            grid.insertAdjacentHTML('beforeend', itemCardHtml);
-        });
+      document.getElementById('kpi-total').textContent = '₹' + Math.round(totalSpent).toLocaleString('en-IN');
+      document.getElementById('kpi-material').textContent = '₹' + Math.round(netMat).toLocaleString('en-IN');
+      document.getElementById('kpi-material-sub').textContent = `Buy: ₹${Math.round(buySum).toLocaleString('en-IN')} • Ret: -₹${Math.round(retSum).toLocaleString('en-IN')}`;
+      document.getElementById('kpi-transport').textContent = '₹' + Math.round(transportSum).toLocaleString('en-IN');
+      document.getElementById('kpi-paid').textContent = '₹' + Math.round(labourPaid).toLocaleString('en-IN');
+      document.getElementById('kpi-paid-sub').textContent = `Agreed: ₹${Math.round(agreedTotal).toLocaleString('en-IN')}`;
+      document.getElementById('kpi-due').textContent = '₹' + Math.round(dueTotal).toLocaleString('en-IN');
     }
 
     function renderContracts() {
-        const container = document.getElementById('contracts-list');
-        if (!container) return;
-        container.innerHTML = '';
+      const box = document.getElementById('contracts-container');
+      const keys = Object.keys(state.contracts).filter(k => (Number(state.contracts[k]) || 0) > 0);
+      if (!keys.length) {
+        box.innerHTML = `<div class="empty-box">${state.lang === 'hi' ? 'अभी कोई ठेका राशि दर्ज नहीं है।' : 'No contract amounts set yet.'}</div>`;
+        return;
+      }
 
-        const keys = Object.keys(contracts);
-        if (keys.length === 0) {
-            container.innerHTML = `<p class="text-xs text-slate-400 italic py-2 text-center">No contracts defined yet.</p>`;
-            return;
-        }
-
-        keys.forEach(cat => {
-            const promised = contracts[cat] || 0;
-            const paid = entries
-                .filter(e => e.type === 'labour' && e.category === cat)
-                .reduce((sum, e) => sum + e.total, 0);
-
-            const pending = Math.max(0, promised - paid);
-            const percent = promised > 0 ? Math.min(100, Math.round((paid / promised) * 100)) : 0;
-            const catName = categoryLabels[cat] ? categoryLabels[cat][currentLang] : cat;
-
-            const cardHtml = `
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5">
-                    <div class="flex justify-between items-center font-semibold text-xs text-slate-800">
-                        <span>${catName}</span>
-                        <span class="text-indigo-600 font-bold">Total: ₹${promised.toLocaleString('en-IN')}</span>
-                    </div>
-                    <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                        <div class="bg-amber-500 h-1.5 rounded-full" style="width: ${percent}%"></div>
-                    </div>
-                    <div class="flex justify-between items-center text-[11px] text-slate-500">
-                        <span>Paid: ₹${paid.toLocaleString('en-IN')} (${percent}%)</span>
-                        <span class="text-rose-600 font-semibold">Remaining: ₹${pending.toLocaleString('en-IN')}</span>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', cardHtml);
-        });
+      box.innerHTML = keys.map(cat => {
+        const agreed = Number(state.contracts[cat]) || 0;
+        const paid = state.entries
+          .filter(e => e.type === 'labour' && e.category === cat)
+          .reduce((s, e) => s + (Number(e.total) || 0), 0);
+        const due = Math.max(0, agreed - paid);
+        const pct = agreed > 0 ? Math.min(100, Math.round((paid / agreed) * 100)) : 0;
+        const label = CAT_NAMES[cat]?.[state.lang] || cat;
+        return `
+          <div class="contract-item">
+            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:800;">
+              <span>${label}</span>
+              <span>₹${agreed.toLocaleString('en-IN')}</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700;">
+              <span style="color:var(--buy);">Paid: ₹${paid.toLocaleString('en-IN')} (${pct}%)</span>
+              <span style="color:var(--ret);">Due: ₹${due.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    function renderTable() {
-        const filterType = document.getElementById('filter-type').value;
-        const filterCategory = document.getElementById('filter-category').value;
-        const searchText = document.getElementById('search-input').value.toLowerCase().trim();
+    function onLedgerCatChanged() {
+      refreshPresetFilters();
+      renderLedger();
+    }
 
-        const tbody = document.getElementById('table-body');
-        const emptyState = document.getElementById('empty-state');
-        if (!tbody || !emptyState) return;
-        tbody.innerHTML = '';
+    function refreshPresetFilters() {
+      const pairs = [
+        ['sum-cat', 'sum-preset'],
+        ['q-cat', 'q-preset']
+      ];
+      pairs.forEach(([catId, preId]) => {
+        const catVal = document.getElementById(catId).value;
+        const preSel = document.getElementById(preId);
+        const prev = preSel.value;
+        preSel.innerHTML = `<option value="all">${state.lang === 'hi' ? 'सभी आइटम' : 'All Items'}</option>`;
 
-        const filtered = entries.filter(item => {
-            const matchesType = (filterType === 'all' || item.type === filterType);
-            const matchesCat = (filterCategory === 'all' || item.category === filterCategory);
-            const matchesSearch = !searchText || 
-                (item.details && item.details.toLowerCase().includes(searchText)) ||
-                (item.presetName && item.presetName.toLowerCase().includes(searchText)) ||
-                (item.remarks && item.remarks.toLowerCase().includes(searchText)) ||
-                (item.paymentMode && item.paymentMode.toLowerCase().includes(searchText));
-
-            return matchesType && matchesCat && matchesSearch;
-        });
-
-        if (filtered.length === 0) {
-            emptyState.classList.remove('hidden');
-            return;
-        } else {
-            emptyState.classList.add('hidden');
-        }
-
-        filtered.forEach(item => {
-            let badgeClass = 'bg-emerald-100 text-emerald-800';
-            let typeText = 'BUY (खरीद)';
-            let typeIcon = 'fa-cart-shopping';
-
-            if (item.type === 'return') {
-                badgeClass = 'bg-rose-100 text-rose-800';
-                typeText = 'RETURN (वापसी)';
-                typeIcon = 'fa-rotate-left';
-            } else if (item.type === 'labour') {
-                badgeClass = 'bg-amber-100 text-amber-800';
-                typeText = 'LABOUR (मजदूरी)';
-                typeIcon = 'fa-user-gear';
+        const seen = new Set();
+        const cats = catVal === 'all' ? Object.keys(PRESETS) : [catVal];
+        cats.forEach(c => {
+          (PRESETS[c] || []).forEach(p => {
+            if (!seen.has(p.id)) {
+              seen.add(p.id);
+              const o = document.createElement('option');
+              o.value = p.id;
+              o.textContent = p[state.lang] || p.hi;
+              preSel.appendChild(o);
             }
-
-            const catBadge = categoryLabels[item.category] ? categoryLabels[item.category][currentLang] : item.category;
-            const presetLabel = item.type === 'labour'
-                ? (item.details || item.presetName || '-')
-                : getCanonicalPresetName(item.category, resolveEntryPresetId(item), item.presetName);
-            const detailLabel = (item.type !== 'labour' && item.details && item.details !== presetLabel) ? item.details : '';
-
-            const rowHtml = `
-                <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-                    <td class="py-3 px-4 font-medium whitespace-nowrap">
-                        <div>${item.date}</div>
-                        <div class="text-[10px] text-slate-400">${item.paymentMode || 'Cash'}</div>
-                    </td>
-                    <td class="py-3 px-4 whitespace-nowrap">
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${badgeClass}">
-                            <i class="fa-solid ${typeIcon} text-[10px]"></i>
-                            ${typeText}
-                        </span>
-                    </td>
-                    <td class="py-3 px-4 whitespace-nowrap font-medium text-slate-600">
-                        ${catBadge}
-                    </td>
-                    <td class="py-3 px-4">
-                        <div class="font-semibold text-slate-900">${presetLabel}</div>
-                        ${detailLabel ? `<div class="text-xs text-indigo-600 font-medium">${detailLabel}</div>` : ''}
-                        ${item.remarks ? `<div class="text-xs text-slate-400 italic">${item.remarks}</div>` : ''}
-                    </td>
-                    <td class="py-3 px-4 text-center whitespace-nowrap">
-                        ${item.type === 'labour' ? '-' : `<span class="font-bold text-slate-800">${item.quantity}</span> <span class="text-slate-500">${item.unit || ''}</span> @ ₹${item.rate}`}
-                    </td>
-                    <td class="py-3 px-4 text-right font-medium text-slate-600 whitespace-nowrap">
-                        ${item.freight && item.freight > 0 ? '₹' + item.freight.toLocaleString('en-IN') : '-'}
-                    </td>
-                    <td class="py-3 px-4 text-right font-bold text-slate-900 whitespace-nowrap">
-                        ${item.type === 'return' ? '-' : ''}₹${item.total.toLocaleString('en-IN')}
-                    </td>
-                    <td class="py-3 px-4 text-center whitespace-nowrap">
-                        <div class="flex items-center justify-center space-x-2">
-                            <button onclick="editEntry(${item.id})" title="Edit Entry" class="p-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button onclick="deleteEntry(${item.id})" title="Delete Entry" class="p-1.5 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-lg transition">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `;
-            tbody.insertAdjacentHTML('beforeend', rowHtml);
+          });
         });
+        state.entries.forEach(e => {
+          if (e.type === 'labour') return;
+          if (catVal !== 'all' && e.category !== catVal) return;
+          if (e.presetId && !seen.has(e.presetId)) {
+            seen.add(e.presetId);
+            const o = document.createElement('option');
+            o.value = e.presetId;
+            o.textContent = e.presetName || e.presetId;
+            preSel.appendChild(o);
+          }
+        });
+
+        if ([...preSel.options].some(o => o.value === prev)) preSel.value = prev;
+        else preSel.value = 'all';
+      });
     }
 
-    // Save files through the Android bridge in the APK; use browser download as a fallback.
-    function saveTextFile(fileName, mimeType, textContent) {
-        if (window.Android && typeof window.Android.saveFile === "function") {
-            try {
-                const bytes = new TextEncoder().encode(textContent);
-                let binary = "";
-                const chunkSize = 0x8000;
+    function canonicalPresetId(entry) {
+      const rawId = String(entry.presetId || '').trim().toLowerCase();
+      const label = `${entry.presetName || ''} ${entry.details || ''}`.toLowerCase();
 
-                for (let i = 0; i < bytes.length; i += chunkSize) {
-                    const chunk = bytes.subarray(i, Math.min(i + chunkSize, bytes.length));
-                    binary += String.fromCharCode.apply(null, chunk);
-                }
-
-                window.Android.saveFile(fileName, mimeType, btoa(binary));
-                return;
-            } catch (error) {
-                console.error("Android file save failed:", error);
-                alert(currentLang === "hi"
-                    ? "फ़ाइल तैयार नहीं हो सकी। कृपया दोबारा कोशिश करें।"
-                    : "Could not prepare the file. Please try again.");
-                return;
-            }
+      // Match against PRESETS in any language first
+      for (const list of Object.values(PRESETS)) {
+        for (const p of list) {
+          if (
+            p.id.toLowerCase() === rawId ||
+            String(p.hi || '').toLowerCase() === String(entry.presetName || '').toLowerCase() ||
+            String(p.en || '').toLowerCase() === String(entry.presetName || '').toLowerCase()
+          ) {
+            return p.id;
+          }
         }
+      }
 
-        const blob = new Blob([textContent], { type: mimeType + ";charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      // Transport / Bhada aliases so old & new transport entries group together
+      if (entry.category === 'transport') {
+        if (label.includes('load') || label.includes('लोड') || label.includes('हमाल')) return 'loading';
+        if (label.includes('auto') || label.includes('pickup') || label.includes('पिकअप') || label.includes('ऑटो')) return 'auto_pickup';
+        if (label.includes('truck') || label.includes('trolley') || label.includes('freight') || label.includes('भाड़ा') || label.includes('ट्रक') || label.includes('ट्रॉली')) return 'freight_trip';
+        return rawId || 'freight_trip';
+      }
+
+      return rawId || 'misc';
     }
 
-    // Download Full JSON Backup (preserves exact presetId, presetName, and custom Item Details / Specification)
-    function downloadBackupJSON() {
-        const sanitizedEntries = entries.map(e => normalizeEntry(e));
-        const backupData = {
-            version: "2.5",
-            exportDate: new Date().toISOString(),
-            entries: sanitizedEntries,
-            contracts: contracts
-        };
-
-        const jsonString = JSON.stringify(backupData, null, 2);
-        const fileName = `Ghar_Nirman_Backup_${new Date().toISOString().slice(0,10)}.json`;
-        saveTextFile(fileName, "application/json", jsonString);
+    function getCanonicalPresetLabel(cat, pId, fallbackName) {
+      const list = PRESETS[cat] || Object.values(PRESETS).flat();
+      const found = list.find(p => p.id === pId) || Object.values(PRESETS).flat().find(p => p.id === pId);
+      if (found) return found[state.lang] || found.hi || found.en;
+      return fallbackName || pId;
     }
 
-    // Trigger File Upload for Restore
-    function triggerRestoreInput() {
-        const input = document.getElementById('restore-file-input');
-        input.value = ''; // Allow selecting the same file again
-        input.click();
+    function renderSummary() {
+      const box = document.getElementById('summary-container');
+      const catFilter = document.getElementById('sum-cat').value;
+      const preFilter = document.getElementById('sum-preset').value;
+
+      const groups = {};
+      state.entries.forEach(e => {
+        if (e.type === 'labour') return;
+        const c = e.category || 'other';
+        const pId = canonicalPresetId(e);
+        if (catFilter !== 'all' && c !== catFilter) return;
+        if (preFilter !== 'all' && pId !== preFilter) return;
+
+        if (!groups[c]) groups[c] = { buyAmt: 0, retAmt: 0, items: {} };
+        const key = c === 'transport' ? pId : `${pId}__${e.unit || 'Other'}`;
+        if (!groups[c].items[key]) {
+          groups[c].items[key] = {
+            name: getCanonicalPresetLabel(c, pId, e.presetName),
+            unit: e.unit || '',
+            unitsSet: new Set(e.unit ? [e.unit] : []),
+            buyQty: 0,
+            retQty: 0,
+            buyCost: 0,
+            retCost: 0
+          };
+        } else if (e.unit) {
+          groups[c].items[key].unitsSet.add(e.unit);
+          if (groups[c].items[key].unitsSet.size > 1) {
+            groups[c].items[key].unit = [...groups[c].items[key].unitsSet].join(' / ');
+          }
+        }
+        const q = Number(e.quantity) || 0;
+        const amt = Number(e.total) || 0;
+        if (e.type === 'buy') {
+          groups[c].buyAmt += amt;
+          groups[c].items[key].buyQty += q;
+          groups[c].items[key].buyCost += amt;
+        } else if (e.type === 'return') {
+          groups[c].retAmt += amt;
+          groups[c].items[key].retQty += q;
+          groups[c].items[key].retCost += amt;
+        }
+      });
+
+      const catKeys = Object.keys(groups);
+      if (!catKeys.length) {
+        box.innerHTML = `<div class="empty-box">${state.lang === 'hi' ? 'कोई सामग्री/खर्च डेटा नहीं मिला।' : 'No matching summary data.'}</div>`;
+        return;
+      }
+
+      box.innerHTML = catKeys.map(c => {
+        const g = groups[c];
+        const netCat = g.buyAmt - g.retAmt;
+        const tiles = Object.values(g.items).map(it => {
+          const netQ = it.buyQty - it.retQty;
+          const netC = it.buyCost - it.retCost;
+          return `
+            <div class="summary-tile">
+              <div style="font-weight:800;">${it.name}</div>
+              <div style="color:var(--muted); margin-top:4px;">Bought: <b>${it.buyQty}</b> ${it.unit}${it.retQty ? ` • Ret: <span style="color:var(--ret);">-${it.retQty}</span>` : ''}</div>
+              <div style="margin-top:4px; font-weight:800; color:var(--buy);">Net: ${netQ} ${it.unit} • ₹${Math.round(netC).toLocaleString('en-IN')}</div>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="summary-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+              <span style="font-weight:800; font-size:13px;">${CAT_NAMES[c]?.[state.lang] || c}</span>
+              <span style="font-weight:800; font-size:13px; color:var(--buy);">Net: ₹${Math.round(netCat).toLocaleString('en-IN')}</span>
+            </div>
+            <div class="summary-items">${tiles}</div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // Restore Data from Uploaded JSON File without altering Item Details / Specification
-    function restoreBackupJSON(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+    function renderLedger() {
+      const listEl = document.getElementById('ledger-list');
+      const search = (document.getElementById('q-search').value || '').toLowerCase().trim();
+      const tFilter = document.getElementById('q-type').value;
+      const cFilter = document.getElementById('q-cat').value;
+      const pFilter = document.getElementById('q-preset').value;
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const parsedData = JSON.parse(e.target.result);
-                if (parsedData && Array.isArray(parsedData.entries)) {
-                    // Preserve each entry's exact `details` (e.g., ACC Cement vs Ultratech Cement) and `presetId`
-                    entries = parsedData.entries.map(item => normalizeEntry(item));
-                    contracts = parsedData.contracts || {};
-                    saveToLocalStorage();
-                    recalculateAll();
-                    alert(currentLang === 'hi' ? 'डाटा सफलतापूर्वक रिस्टोर (Restore) हो गया है!' : 'Data restored successfully!');
-                } else {
-                    alert(currentLang === 'hi' ? 'गलत फ़ाइल प्रारूप (Invalid File Format)' : 'Invalid JSON file structure.');
-                }
-            } catch (err) {
-                alert(currentLang === 'hi' ? 'फ़ाइल पढ़ने में त्रुटि हुई।' : 'Error parsing backup file.');
-            }
-        };
-        reader.readAsText(file, 'UTF-8');
+      document.getElementById('ledger-count').textContent = `${state.entries.length} ${state.lang === 'hi' ? 'एंट्री' : 'Entries'}`;
+
+      const filtered = state.entries.filter(e => {
+        if (tFilter !== 'all' && e.type !== tFilter) return false;
+        if (cFilter !== 'all' && e.category !== cFilter) return false;
+        if (pFilter !== 'all' && e.presetId !== pFilter) return false;
+        if (search) {
+          const hay = `${e.presetName || ''} ${e.details || ''} ${e.remarks || ''} ${e.paymentMode || ''} ${e.category || ''}`.toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
+        return true;
+      });
+
+      let sBuy = 0, sRet = 0, sLab = 0;
+      filtered.forEach(e => {
+        const amt = Number(e.total) || 0;
+        if (e.type === 'return') sRet += amt;
+        else if (e.type === 'labour') sLab += amt;
+        else sBuy += amt;
+      });
+      document.getElementById('strip-buy').textContent = '₹' + Math.round(sBuy).toLocaleString('en-IN');
+      document.getElementById('strip-return').textContent = '₹' + Math.round(sRet).toLocaleString('en-IN');
+      document.getElementById('strip-labour').textContent = '₹' + Math.round(sLab).toLocaleString('en-IN');
+      document.getElementById('strip-net').textContent = '₹' + Math.round((sBuy + sLab) - sRet).toLocaleString('en-IN');
+
+      if (!filtered.length) {
+        listEl.innerHTML = `<div class="empty-box">${state.lang === 'hi' ? 'कोई एंट्री नहीं मिली। ऊपर फॉर्म से नई एंट्री जोड़ें।' : 'No entries found. Add one using the form above.'}</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map((e, idx) => {
+        const badgeClass = e.type === 'return' ? 'badge-return' : (e.type === 'labour' ? 'badge-labour' : 'badge-buy');
+        const typeLabel = e.type.toUpperCase();
+        const catLabel = CAT_NAMES[e.category]?.[state.lang] || e.category;
+        const amtColor = e.type === 'return' ? 'var(--ret)' : (e.type === 'labour' ? 'var(--lab)' : 'var(--ink)');
+        const sign = e.type === 'return' ? '-' : '';
+        const qtyText = e.type === 'labour'
+          ? (e.paymentMode || 'Cash')
+          : (e.category === 'transport' && (!e.quantity || !e.unit)
+              ? `${e.paymentMode || 'Cash'}`
+              : `${e.quantity} ${e.unit} × ₹${e.rate} (${e.paymentMode || 'Cash'})`);
+
+        return `
+          <div class="entry-row">
+            <div style="min-width:0; flex:1;">
+              <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <span class="badge ${badgeClass}">${typeLabel}</span>
+                ${idx === 0 ? '<span class="badge badge-new">NEW</span>' : ''}
+                <span style="font-size:11px; font-weight:700; color:var(--muted);">${catLabel}</span>
+                <span style="font-size:11px; color:var(--muted);">• ${e.date}</span>
+              </div>
+              <div style="font-size:14px; font-weight:800; margin-top:4px;">${e.presetName || e.details || '-'}</div>
+              ${e.details && e.details !== e.presetName ? `<div style="font-size:12px; font-weight:600; color:var(--info);">${e.details}</div>` : ''}
+              <div style="font-size:11px; color:var(--muted); margin-top:2px;">${qtyText}${e.remarks ? ` • <i>${e.remarks}</i>` : ''}</div>
+            </div>
+            <div style="text-align:right; flex-shrink:0;">
+              <div style="font-size:15px; font-weight:800; color:${amtColor};">${sign}₹${(Number(e.total) || 0).toLocaleString('en-IN')}</div>
+              <div class="row-actions">
+                <button type="button" class="btn btn-info-soft" style="padding:5px 8px; font-size:11px;" onclick="editRecord('${e.id}')">Edit</button>
+                <button type="button" class="btn btn-danger-soft" style="padding:5px 8px; font-size:11px;" onclick="deleteRecord('${e.id}')">Del</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    function exportToCSV() {
-        if (entries.length === 0) {
-            alert(currentLang === 'hi' ? 'निर्यात के लिए कोई डेटा नहीं है।' : 'No entries available to export.');
+    function mobileView(tab) {
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      const active = document.getElementById('mnav-' + tab);
+      if (active) active.classList.add('active');
+
+      if (window.innerWidth >= 768 || tab === 'all') {
+        ['sec-kpis', 'sec-form', 'sec-contracts', 'sec-summary', 'sec-ledger'].forEach(id => {
+          document.getElementById(id)?.classList.remove('hidden');
+        });
+        return;
+      }
+
+      ['sec-kpis', 'sec-form', 'sec-contracts', 'sec-summary', 'sec-ledger'].forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+      });
+      if (tab === 'add') {
+        document.getElementById('sec-form')?.classList.remove('hidden');
+        document.getElementById('sec-contracts')?.classList.remove('hidden');
+      } else if (tab === 'summary') {
+        state.showSummary = true;
+        syncVisibilityToggles();
+        document.getElementById('sec-summary')?.classList.remove('hidden');
+      } else if (tab === 'ledger') {
+        state.showLedger = true;
+        syncVisibilityToggles();
+        document.getElementById('sec-ledger')?.classList.remove('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        ['sec-kpis', 'sec-form', 'sec-contracts', 'sec-summary', 'sec-ledger'].forEach(id => {
+          document.getElementById(id)?.classList.remove('hidden');
+        });
+      }
+    });
+
+    // Save files through Android WebView bridge; use browser download outside the APK.
+    async function saveBlobFile(blob, fileName, mimeType) {
+      try {
+        if (window.Android && typeof window.Android.saveFile === 'function') {
+          const bytes = new Uint8Array(await blob.arrayBuffer());
+          let binary = '';
+          const chunkSize = 0x8000;
+          for (let i = 0; i < bytes.length; i += chunkSize) {
+            binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+          }
+          window.Android.saveFile(fileName, mimeType || blob.type || 'application/octet-stream', btoa(binary));
+          return true;
+        }
+      } catch (err) {
+        console.error('Android file save failed:', err);
+        showToast(state.lang === 'hi' ? 'फ़ाइल सेव नहीं हो सकी। फिर से कोशिश करें।' : 'Could not save file. Please try again.');
+        return false;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+      return true;
+    }
+
+    function exportBackup() {
+      const payload = {
+        app: 'Dream Home v2.5',
+        version: '2.5',
+        exportedAt: new Date().toISOString(),
+        entries: state.entries,
+        contracts: state.contracts
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+      const fileName = `Dream_Home_v2.5_Backup_${todayISO()}.json`;
+      saveBlobFile(blob, fileName, 'application/json');
+      setExportNotice(state.lang === 'hi'
+        ? `JSON बैकअप सेव करने के लिए स्थान चुनें (${state.entries.length} एंट्री)`
+        : `Choose a location to save JSON backup (${state.entries.length} entries)`);
+      showToast(state.lang === 'hi' ? 'बैकअप सेव करने का स्थान चुनें' : 'Choose where to save the backup');
+    }
+
+    function triggerImport() {
+      const inp = document.getElementById('import-file-input');
+      inp.value = '';
+      inp.click();
+    }
+
+    function handleImportFile(ev) {
+      const file = ev.target?.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(String(e.target.result || '').replace(/^﻿/, ''));
+          const arr = Array.isArray(parsed) ? parsed : (Array.isArray(parsed?.entries) ? parsed.entries : null);
+          if (!arr) {
+            showToast('Invalid JSON backup');
             return;
+          }
+          if (state.entries.length > 0) {
+            const msg = state.lang === 'hi'
+              ? `मौजूदा ${state.entries.length} एंट्रियां बदलकर ${arr.length} एंट्रियां इंपोर्ट करें? पहले बैकअप सुरक्षित रखें।`
+              : `Replace ${state.entries.length} existing entries with ${arr.length} imported entries? Make sure your existing data is backed up.`;
+            if (!window.confirm(msg)) {
+              showToast(state.lang === 'hi' ? 'इंपोर्ट रद्द किया गया' : 'Import cancelled');
+              return;
+            }
+          }
+          state.entries = arr.map(normalizeRecord);
+          if (parsed && parsed.contracts && typeof parsed.contracts === 'object') {
+            state.contracts = parsed.contracts;
+          }
+          if (!persistState()) return;
+          renderAll();
+          showToast(`${state.entries.length} entries imported!`);
+        } catch (_) {
+          showToast('JSON parse error');
         }
-
-        let csvContent = "\uFEFF"; // UTF-8 BOM for proper Hindi rendering in Excel
-        csvContent += "ID,Date,Type,Category,Item Preset,Item Details,Quantity,Unit,Rate,Freight,Total Amount,Payment Mode,Remarks\n";
-
-        entries.forEach(e => {
-            const presetLabel = e.type === 'labour'
-                ? (e.details || e.presetName || '')
-                : getCanonicalPresetName(e.category, resolveEntryPresetId(e), e.presetName);
-            const row = [
-                e.id,
-                `"${e.date}"`,
-                `"${e.type}"`,
-                `"${e.category}"`,
-                `"${presetLabel.replace(/"/g, '""')}"`,
-                `"${(e.details || '').replace(/"/g, '""')}"`,
-                e.quantity || 0,
-                `"${e.unit || ''}"`,
-                e.rate || 0,
-                e.freight || 0,
-                e.total || 0,
-                `"${e.paymentMode || 'Cash'}"`,
-                `"${(e.remarks || '').replace(/"/g, '""')}"`
-            ];
-            csvContent += row.join(",") + "\n";
-        });
-
-        const fileName = `Ghar_Nirman_Expenses_${new Date().toISOString().slice(0,10)}.csv`;
-        saveTextFile(fileName, "text/csv", csvContent);
+      };
+      reader.readAsText(file, 'UTF-8');
     }
-</script>
 
+    function triggerAutoHTMLAfterConversion(reasonLabel) {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+      const fileName = `Dream_Home_v2.5_${todayISO()}.html`;
+      saveBlobFile(blob, fileName, 'text/html');
+      setExportNotice(state.lang === 'hi'
+        ? `${reasonLabel} के बाद HTML फ़ाइल सेव करने के लिए स्थान चुनें`
+        : `Choose a location to save the HTML file after ${reasonLabel}`);
+    }
+
+    function sanitizeCSVText(val) {
+      const str = String(val ?? '');
+      // Keep Basic Latin (English/digits/punctuation) and Devanagari (Hindi) + whitespace; strip other scripts/emojis
+      return str.replace(/[^\u0009\u000A\u000D\u0020-\u007E\u0900-\u097F]/g, '').trim();
+    }
+
+    function exportCSV() {
+      if (!state.entries.length) {
+        showToast(state.lang === 'hi' ? 'CSV के लिए कोई डेटा नहीं है' : 'No entries to export');
+        return;
+      }
+      const header = ['ID', 'Date', 'Type', 'Category', 'Item', 'Details', 'Quantity', 'Unit', 'Rate', 'Total', 'Mode', 'Remarks'];
+      const rows = state.entries.map(e => [
+        sanitizeCSVText(e.id),
+        sanitizeCSVText(e.date),
+        sanitizeCSVText(e.type),
+        sanitizeCSVText(e.category),
+        `"${sanitizeCSVText(e.presetName).replace(/"/g, '""')}"`,
+        `"${sanitizeCSVText(e.details).replace(/"/g, '""')}"`,
+        sanitizeCSVText(e.quantity),
+        `"${sanitizeCSVText(e.unit).replace(/"/g, '""')}"`,
+        sanitizeCSVText(e.rate),
+        sanitizeCSVText(e.total),
+        `"${sanitizeCSVText(e.paymentMode).replace(/"/g, '""')}"`,
+        `"${sanitizeCSVText(e.remarks).replace(/"/g, '""')}"`
+      ].join(','));
+      const csv = '\uFEFF' + [header.join(','), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const fileName = `Dream_Home_v2.5_${todayISO()}.csv`;
+      saveBlobFile(blob, fileName, 'text/csv');
+      setExportNotice(state.lang === 'hi'
+        ? `CSV सेव करने के लिए स्थान चुनें (${state.entries.length} एंट्री)`
+        : `Choose a location to save CSV (${state.entries.length} entries)`);
+      showToast(state.lang === 'hi' ? 'CSV सेव करने का स्थान चुनें' : 'Choose where to save CSV');
+    }
+
+    function setExportNotice(msg) {
+      const bar = document.getElementById('export-status-bar');
+      const txt = document.getElementById('export-status-text');
+      if (bar && txt) {
+        txt.textContent = msg;
+        bar.classList.remove('hidden');
+      }
+    }
+
+    function downloadHTMLSnapshot() {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8;' });
+      const fileName = `Dream_Home_v2.5_${todayISO()}.html`;
+      saveBlobFile(blob, fileName, 'text/html');
+      showToast(state.lang === 'hi' ? 'HTML सेव करने का स्थान चुनें' : 'Choose where to save HTML');
+    }
+
+    function resetEverything() {
+      const msg = state.lang === 'hi'
+        ? `क्या आप वाकई पूरा डेटा रीसेट करना चाहते हैं? सभी ${state.entries.length} एंट्रियां और ठेका राशि मिट जाएगी।`
+        : `Are you sure you want to reset all data? All ${state.entries.length} entries and contracts will be permanently cleared.`;
+      if (!window.confirm(msg)) {
+        showToast(state.lang === 'hi' ? 'रीसेट रद्द किया गया' : 'Reset cancelled');
+        return;
+      }
+      state.entries = [];
+      state.contracts = {};
+      if (!persistState()) return;
+      resetForm();
+      renderAll();
+      showToast(state.lang === 'hi' ? 'डेटा रीसेट हो गया' : 'All data reset');
+    }
+
+    (function boot() {
+      loadState();
+      document.getElementById('f-date').value = todayISO();
+      applyLang();
+      onCategoryChanged();
+      selectType('buy');
+      renderAll();
+    })();
+  </script>
 </body>
 </html>
